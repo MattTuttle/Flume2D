@@ -3,8 +3,8 @@ Flume2D
 
 This engine is available for anyone to use in their game. The code is in Java and uses AWT for rendering sprites. It is influenced from flash game engines like FlashPunk and Flixel.
 
-Here are some of the features of Flume2D:
-
+Features
+------------------------
 * Sprite, Tilemap, and Canvas rendering
 	* Rotated image calculation
 	* Layered graphic lists
@@ -16,3 +16,7 @@ Here are some of the features of Flume2D:
 	* Similar to FlashPunk masks
 	* AABB, Circle, Grid and Polygon collision
 * Basic UDP Networking
+
+License
+------------------------
+This engine is covered under the MIT license. Feel free to use the code in any project. I would love to hear what you do with it though!
