@@ -6,28 +6,28 @@ import java.util.*;
 import com.flume2d.graphics.Graphic;
 import com.flume2d.math.Vector2;
 
-public class World
+public class Scene
 {
 	
 	public static Vector2 camera = new Vector2();
 	
-	public World()
+	public Scene()
 	{
-		added = new LinkedList<IWorldEntity>();
-		removed = new LinkedList<IWorldEntity>();
+		added = new LinkedList<ISceneEntity>();
+		removed = new LinkedList<ISceneEntity>();
 		renderList = new LinkedList<Entity>();
 		updateList = new LinkedList<Entity>();
 		typeList = new HashMap<String, LinkedList<Entity>>();
 	}
 	
-	public void add(IWorldEntity e)
+	public void add(ISceneEntity e)
 	{
 		if (e.hasWorld()) return;
 		added.add(e);
 		e.setWorld(this);
 	}
 	
-	public void remove(IWorldEntity e)
+	public void remove(ISceneEntity e)
 	{
 		removed.add(e);
 	}
@@ -79,13 +79,13 @@ public class World
 		while (it.hasNext())
 		{
 			Entity e = it.next();
-			e.render(g, World.camera.x, World.camera.y);
+			e.render(g, Scene.camera.x, Scene.camera.y);
 		}
 	}
 	
 	private void updateLists()
 	{
-		Iterator<IWorldEntity> it;
+		Iterator<ISceneEntity> it;
 		
 		// add any new entities
 		it = added.iterator();
@@ -141,8 +141,8 @@ public class World
 		}
 	}
 
-	private LinkedList<IWorldEntity> added;
-	private LinkedList<IWorldEntity> removed;
+	private LinkedList<ISceneEntity> added;
+	private LinkedList<ISceneEntity> removed;
 	private LinkedList<Entity> renderList;
 	private LinkedList<Entity> updateList;
 	private HashMap<String, LinkedList<Entity>> typeList;

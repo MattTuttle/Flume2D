@@ -17,7 +17,7 @@ public class Engine extends Canvas implements Runnable
 	public static int height;
 	public static double elapsed;
 	
-	public World world;
+	public Scene world;
 	
 	/**
 	 * Constructs the engine
@@ -30,7 +30,7 @@ public class Engine extends Canvas implements Runnable
 		addMouseListener(input);
 		addMouseMotionListener(input);
 		
-		world = new World(); // empty world
+		world = new Scene(); // empty world
 		
 		emptyCursor = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "empty");
 		defaultCursor = getCursor();

@@ -1,8 +1,8 @@
 package com.flume2d;
 
-public interface IWorldEntity
+public interface ISceneEntity
 {
-	public void setWorld(World world);
+	public void setWorld(Scene world);
 	public boolean hasWorld();
 	
 	public void added();

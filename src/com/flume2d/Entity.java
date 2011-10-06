@@ -7,7 +7,7 @@ import com.flume2d.graphics.Graphic;
 import com.flume2d.masks.*;
 import com.flume2d.math.*;
 
-public class Entity implements IWorldEntity
+public class Entity implements ISceneEntity
 {
 	
 	public double x;
@@ -79,7 +79,7 @@ public class Entity implements IWorldEntity
 	
 
 	@Override
-	public void setWorld(World world)
+	public void setWorld(Scene world)
 	{
 		this.world = world;
 	}
@@ -107,6 +107,6 @@ public class Entity implements IWorldEntity
 	public Graphic graphic;
 	public Mask mask;
 	
-	private World world;
+	private Scene world;
 	
 }
