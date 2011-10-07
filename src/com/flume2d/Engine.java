@@ -116,12 +116,21 @@ public class Engine extends Canvas implements Runnable
 		}
 	}
 	
+	private void hideCursor()
+	{
+		setCursor(emptyCursor);
+	}
+	
+	private void showCursor()
+	{
+		setCursor(defaultCursor);
+	}
+	
 	private void render()
 	{
 		if (hadFocus != hasFocus())
 		{
 			hadFocus = !hadFocus;
-//			setCursor(hadFocus ? emptyCursor : defaultCursor);
 		}
 		
 		BufferStrategy bs = getBufferStrategy();

@@ -5,7 +5,6 @@ import java.awt.geom.*;
 import java.awt.image.*;
 
 import com.flume2d.*;
-import com.flume2d.math.Vector2;
 
 public class Image implements Graphic, ImageObserver
 {

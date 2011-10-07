@@ -17,6 +17,11 @@ Features
 	* AABB, Circle, Grid and Polygon collision
 * Basic UDP Networking
 
+Todo
+------------------------
+* Sounds / Music
+* Tweens, Motion helpers?
+
 License
 ------------------------
 This engine is covered under the MIT license. Feel free to use the code in any project. I would love to hear what you do with it though!
