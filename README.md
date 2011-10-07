@@ -22,6 +22,8 @@ Todo
 * Tweens, Motion helpers?
 * Particle System
 * Collision Polygon editor
+* Font rendering
+* GUI
 
 License
 ------------------------

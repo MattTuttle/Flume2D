@@ -17,7 +17,7 @@ public class Engine extends Canvas implements Runnable
 	public static int height;
 	public static double elapsed;
 	
-	public Scene world;
+	public Scene scene;
 	
 	/**
 	 * Constructs the engine
@@ -30,7 +30,7 @@ public class Engine extends Canvas implements Runnable
 		addMouseListener(input);
 		addMouseMotionListener(input);
 		
-		world = new Scene(); // empty world
+		scene = new Scene(); // empty world
 		
 		emptyCursor = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "empty");
 		defaultCursor = getCursor();
@@ -112,7 +112,7 @@ public class Engine extends Canvas implements Runnable
 	{
 		if (hasFocus())
 		{
-			world.update();
+			scene.update();
 		}
 	}
 	
@@ -142,7 +142,7 @@ public class Engine extends Canvas implements Runnable
 		
 		// clear screen
 		backBuffer.getGraphics().clearRect(0, 0, width, height);
-		world.render();
+		scene.render();
 		
 		Graphics g = bs.getDrawGraphics();
 		g.fillRect(0, 0, getWidth(), getHeight());
