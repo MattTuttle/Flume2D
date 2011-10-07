@@ -81,6 +81,7 @@ public class Scene
 			Entity e = it.next();
 			e.render(g, Scene.camera.x, Scene.camera.y);
 		}
+		g.dispose();
 	}
 	
 	private void updateLists()

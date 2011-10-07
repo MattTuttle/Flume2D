@@ -5,8 +5,9 @@ import java.awt.geom.*;
 import java.awt.image.*;
 
 import com.flume2d.*;
+import com.flume2d.math.Vector2;
 
-public class Image implements Graphic
+public class Image implements Graphic, ImageObserver
 {
 	
 	public int frameX;
@@ -32,28 +33,36 @@ public class Image implements Graphic
 	@Override
 	public void render(Graphics g, int x, int y)
 	{
-		int hw = (int) (frameWidth / 2 * scale);
-		int hh = (int) (frameHeight / 2 * scale);
-		if (angle == 0 && scale == 1)
+		int sfw = (int) (frameWidth * scale);
+		int sfh = (int) (frameHeight * scale);
+		if (angle == 0)
 		{
+			// untransformed (much faster)
+			int hw = sfw / 2;
+			int hh = sfh / 2;
 			g.drawImage(image, x - hw, y - hh, x + hw, y + hh,
 				frameX, frameY, frameX + frameWidth, frameY + frameHeight,
-				null);
+				this);
 		}
 		else
 		{
-			Graphics2D g2d = (Graphics2D) g;
-			AffineTransform origTX = g2d.getTransform();
-			AffineTransform newTX = (AffineTransform)(origTX.clone());
+			diagonal = (int) Math.sqrt(sfw * sfw + sfh * sfh);
+			if (transformedImage == null || diagonal != transformedImage.getWidth())
+			{
+				transformedImage = new BufferedImage(diagonal, diagonal, BufferedImage.TYPE_INT_ARGB);
+				Graphics2D g2d = (Graphics2D) transformedImage.getGraphics();
+				g2d.drawImage(image, (diagonal - sfw) / 2, (diagonal - sfh) / 2, null);
+			}
 			
-			newTX.rotate(Math.toRadians(angle), x, y);
-			newTX.scale(scale, scale);
-			g2d.setTransform(newTX);
-			g2d.drawImage(image, x - hw, y - hh, x + hw, y + hh,
-				frameX, frameY, frameX + frameWidth, frameY + frameHeight,
-				null);
-			// reset the transform
-			g2d.setTransform(origTX);
+			int half = diagonal / 2;
+			AffineTransform at = new AffineTransform();
+			at.scale(scale, scale);
+			at.rotate(Math.toRadians(angle), half, half);
+			BufferedImageOp bio = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC);
+			
+			g.drawImage(bio.filter(transformedImage, null), x - half, y - half, x + half, y + half,
+				frameX, frameY, frameX + diagonal, frameY + diagonal,
+				this);
 		}
 	}
 
@@ -61,6 +70,15 @@ public class Image implements Graphic
 	@Override public boolean isActive() { return false; }
 	@Override public boolean isVisible() { return true; }
 	
+	@Override
+	public boolean imageUpdate(java.awt.Image image, int flags, int x, int y, int width, int height)
+	{
+		return false;
+	}
+	
 	private BufferedImage image;
+	
+	private BufferedImage transformedImage;
+	private int diagonal;
 
 }
