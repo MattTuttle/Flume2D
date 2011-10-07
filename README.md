@@ -19,8 +19,9 @@ Features
 
 Todo
 ------------------------
-* Sounds / Music
 * Tweens, Motion helpers?
+* Particle System
+* Collision Polygon editor
 
 License
 ------------------------
