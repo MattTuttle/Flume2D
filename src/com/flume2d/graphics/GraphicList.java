@@ -3,6 +3,8 @@ package com.flume2d.graphics;
 import java.awt.*;
 import java.util.*;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class GraphicList implements Graphic
 {
 	
@@ -37,13 +39,13 @@ public class GraphicList implements Graphic
 	}
 
 	@Override
-	public void render(int x, int y)
+	public void render(SpriteBatch b, int x, int y)
 	{
 		Iterator<Graphic> it = graphics.iterator();
 		while(it.hasNext())
 		{
 			Graphic graphic = (Graphic) it.next();
-			if (graphic.isVisible()) graphic.render(x, y);
+			if (graphic.isVisible()) graphic.render(b, x, y);
 			if (graphic.isActive()) graphic.update();
 		}
 	}

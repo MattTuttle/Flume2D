@@ -1,8 +1,8 @@
 package com.flume2d;
 
-import java.awt.Graphics;
 import java.util.*;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.flume2d.graphics.Graphic;
 import com.flume2d.masks.*;
 import com.flume2d.math.*;
@@ -61,10 +61,10 @@ public class Entity implements ISceneEntity
 		if (graphic != null && graphic.isActive()) graphic.update();
 	}
 	
-	public void render(double camx, double camy)
+	public void render(SpriteBatch b, double camx, double camy)
 	{
 		if (graphic != null)
-			graphic.render((int)(x - camx), (int)(y - camy));
+			graphic.render(b, (int)(x - camx), (int)(y - camy));
 	}
 	
 	public double distanceFrom(Entity e)

@@ -3,6 +3,8 @@ package com.flume2d.graphics;
 import java.awt.*;
 import java.awt.image.*;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class Canvas implements Graphic
 {
 	
@@ -50,9 +52,9 @@ public class Canvas implements Graphic
 	}
 
 	@Override
-	public void render(int x, int y)
+	public void render(SpriteBatch b, int x, int y)
 	{
-//		g.drawImage(canvas, x, y, null);
+//		b.draw(canvas, x, y, null);
 		if (clearOnRender) clear();
 	}
 

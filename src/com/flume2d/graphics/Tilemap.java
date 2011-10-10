@@ -1,6 +1,7 @@
 package com.flume2d.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Tilemap implements Graphic
 {
@@ -23,14 +24,14 @@ public class Tilemap implements Graphic
 	}
 
 	@Override
-	public void render(int x, int y)
+	public void render(SpriteBatch b, int x, int y)
 	{
 		// if the tilemap has changed we redraw it
 		if (dirty)
 		{
 			redraw();
 		}
-//		g.drawImage(buffer, x, y, x + width, x + height, 0, 0, width, height, null);
+//		b.drawImage(buffer, x, y, x + width, x + height, 0, 0, width, height, null);
 	}
 	
 	private void redraw()

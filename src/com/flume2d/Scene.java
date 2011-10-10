@@ -3,6 +3,7 @@ package com.flume2d;
 import java.awt.Graphics;
 import java.util.*;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.flume2d.graphics.Graphic;
 import com.flume2d.math.Vector2;
 
@@ -74,12 +75,16 @@ public class Scene
 	
 	public void render()
 	{
+		SpriteBatch batch = new SpriteBatch();
 		Iterator<Entity> it = renderList.iterator();
+		batch.begin();
 		while (it.hasNext())
 		{
 			Entity e = it.next();
-			e.render(Scene.camera.x, Scene.camera.y);
+			e.render(batch, Scene.camera.x, Scene.camera.y);
 		}
+		batch.end();
+		batch.dispose();
 	}
 	
 	private void updateLists()
