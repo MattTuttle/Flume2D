@@ -10,8 +10,8 @@ import com.flume2d.math.*;
 public class Entity implements ISceneEntity
 {
 	
-	public double x;
-	public double y;
+	public float x;
+	public float y;
 	
 	public Entity()
 	{
@@ -61,10 +61,10 @@ public class Entity implements ISceneEntity
 		if (graphic != null && graphic.isActive()) graphic.update();
 	}
 	
-	public void render(SpriteBatch b, double camx, double camy)
+	public void render(SpriteBatch b)
 	{
 		if (graphic != null)
-			graphic.render(b, (int)(x - camx), (int)(y - camy));
+			graphic.render(b, x, y);
 	}
 	
 	public double distanceFrom(Entity e)

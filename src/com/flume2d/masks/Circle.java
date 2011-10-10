@@ -44,7 +44,7 @@ public class Circle implements Mask
 		// check the radius length to the distance between centers
 		if(distanceSquared < totalRadius * totalRadius)
 		{
-			double difference = totalRadius - Math.sqrt(distanceSquared);
+			float difference = totalRadius - (float) Math.sqrt(distanceSquared);
 			return new Vector2((mask.x - x) * difference, (mask.y - y) * difference);
 		}
 		

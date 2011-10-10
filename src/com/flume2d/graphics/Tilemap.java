@@ -24,7 +24,7 @@ public class Tilemap implements Graphic
 	}
 
 	@Override
-	public void render(SpriteBatch b, int x, int y)
+	public void render(SpriteBatch b, float x, float y)
 	{
 		// if the tilemap has changed we redraw it
 		if (dirty)

@@ -3,35 +3,35 @@ package com.flume2d.math;
 public class Vector2
 {
 	
-	public double x;
-	public double y;
+	public float x;
+	public float y;
 	
 	public Vector2()
 	{
 		x = y = 0;
 	}
 	
-	public Vector2(double x, double y)
+	public Vector2(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
-	public double length()
+	public float length()
 	{
-		return Math.sqrt(x * x + y * y);
+		return (float) Math.sqrt(x * x + y * y);
 	}
 	
 	public void normalize()
 	{
-		double len = length();
+		float len = length();
 		x = x / len;
 		y = y / len;
 	}
 	
-	public void truncate(double value)
+	public void truncate(float value)
 	{
-		double len = Math.min(value, length());
+		float len = Math.min(value, length());
 		normalize();
 		multiply(len);
 		if(Math.abs(x) < 0.00000001) x = 0;
@@ -50,13 +50,13 @@ public class Vector2
 		y -= vec.y;
 	}
 	
-	public void multiply(double scalar)
+	public void multiply(float scalar)
 	{
 		x *= scalar;
 		y *= scalar;
 	}
 	
-	public void divide(double scalar)
+	public void divide(float scalar)
 	{
 		x /= scalar;
 		y /= scalar;
@@ -75,12 +75,12 @@ public class Vector2
 		return result;
 	}
 	
-	public double cross(Vector2 vec)
+	public float cross(Vector2 vec)
 	{
 		return (x * vec.y - y * vec.x);
 	}
 	
-	public double dot(Vector2 vec)
+	public float dot(Vector2 vec)
 	{
 		return (x * vec.x + y * vec.y);
 	}

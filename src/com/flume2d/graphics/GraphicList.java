@@ -39,7 +39,7 @@ public class GraphicList implements Graphic
 	}
 
 	@Override
-	public void render(SpriteBatch b, int x, int y)
+	public void render(SpriteBatch b, float x, float y)
 	{
 		Iterator<Graphic> it = graphics.iterator();
 		while(it.hasNext())

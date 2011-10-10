@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.InputProcessor;
 
-public class InputHandler implements InputProcessor
+public class Input implements InputProcessor
 {
 	private static boolean[] keys = new boolean[256];
 	private static HashMap<String, int[]> keymap = new HashMap<String, int[]>();

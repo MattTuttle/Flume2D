@@ -1,6 +1,5 @@
 package com.flume2d;
 
-import java.awt.Graphics;
 import java.util.*;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,9 +21,9 @@ public class Scene
 		typeList = new HashMap<String, LinkedList<Entity>>();
 		
 		Matrix4 projection = new Matrix4();
-        projection.setToOrtho(0, 320, 240, 0, -1, 1);
+        projection.setToOrtho(0, Engine.width, Engine.height, 0, -1, 1);
 		spriteBatch = new SpriteBatch();
-		spriteBatch.setProjectionMatrix(projection);
+//		spriteBatch.setProjectionMatrix(projection);
 	}
 	
 	public void destroy()
@@ -86,12 +85,15 @@ public class Scene
 	
 	public void render()
 	{
-		Iterator<Entity> it = renderList.iterator();
+		matrix.idt();
+        matrix.setToTranslation(camera.x, camera.y, 0);
+        spriteBatch.setTransformMatrix(matrix);
 		spriteBatch.begin();
+		Iterator<Entity> it = renderList.iterator();
 		while (it.hasNext())
 		{
 			Entity e = it.next();
-			e.render(spriteBatch, Scene.camera.x, Scene.camera.y);
+			e.render(spriteBatch);
 		}
 		spriteBatch.end();
 	}
@@ -154,6 +156,7 @@ public class Scene
 		}
 	}
 
+	private Matrix4 matrix = new Matrix4();
 	private SpriteBatch spriteBatch;
 	
 	private LinkedList<ISceneEntity> added;

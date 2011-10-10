@@ -2,15 +2,15 @@ package com.flume2d.math;
 
 public class Range
 {
-	public double min;
-	public double max;
+	public float min;
+	public float max;
 	
 	public Range()
 	{
 		min = max = 0;
 	}
 	
-	public Range(double min, double max)
+	public Range(float min, float max)
 	{
 		this.min = min;
 		this.max = max;

@@ -19,7 +19,7 @@ public class Polygon implements Mask
 		
 		for (int j = 1; j < list.length; j++)
 		{
-			double t = axis.dot(list[j]);
+			float t = axis.dot(list[j]);
 			if (t < r.min) r.min = t;
 			if (t > r.max) r.max = t;
 		}
@@ -29,7 +29,7 @@ public class Polygon implements Mask
 	public void padding(Vector2[] list)
 	{
 		Vector2 temp = new Vector2(-(list[1].y - list[0].y), list[1].x - list[0].x);
-		temp.truncate(0.00000001);
+		temp.truncate(0.00000001f);
 		Vector2 vec = new Vector2(list[1].x, list[1].y);
 		vec.add(temp);
 		list[list.length] = vec;
@@ -58,25 +58,25 @@ public class Polygon implements Mask
 			r2 = project(axis, vertices);
 			
 			// shift to match mask projected points
-			double off = axis.dot(offset);
+			float off = axis.dot(offset);
 			r1.min += off;
 			r1.max += off;
 			
 			// test for intersections
-			double test1 = r1.min - r2.max;
-			double test2 = r2.min - r1.max;
+			float test1 = r1.min - r2.max;
+			float test2 = r2.min - r1.max;
 			if (test1 > 0 || test2 > 0)
 				return null; // no intersection so we bail
 		}
 		
-		double range = (r2.max - r1.min) * -1;
+		float range = (r2.max - r1.min) * -1;
 		return new Vector2(axis.x * range, axis.y * range);
 	}
 
 	public Vector2 collideCircle(Circle mask)
 	{
 		Vector2 closestVector = new Vector2();
-		double testDistance = Integer.MAX_VALUE;
+		float testDistance = Integer.MAX_VALUE;
 		Vector2 offset = new Vector2(x - mask.x, y - mask.y);
 		
 		// add padding if this is a line
@@ -85,7 +85,7 @@ public class Polygon implements Mask
 		// find the closest vertex to use to find the normal
 		for (int i = 0; i < vertices.length; i++)
 		{
-			double distance = (mask.x - (x + vertices[i].x)) * (mask.x - (x + vertices[i].x)) + (mask.y - (y + vertices[i].y)) * (mask.y - (y + vertices[i].y));
+			float distance = (mask.x - (x + vertices[i].x)) * (mask.x - (x + vertices[i].x)) + (mask.y - (y + vertices[i].y)) * (mask.y - (y + vertices[i].y));
 			if (distance < testDistance)
 			{
 				testDistance = distance;
@@ -104,7 +104,7 @@ public class Polygon implements Mask
 		r2.max = mask.radius;
 		
 		// shift to match mask projected points
-		double off = axis.dot(offset);
+		float off = axis.dot(offset);
 		r1.min += off;
 		r1.max += off;
 		
@@ -133,7 +133,7 @@ public class Polygon implements Mask
 				return null;
 		}
 		
-		double range = (r2.max - r1.min) * -1;
+		float range = (r2.max - r1.min) * -1;
 		return new Vector2(axis.x * range, axis.y * range);
 	}
 
