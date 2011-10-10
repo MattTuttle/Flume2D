@@ -1,7 +1,7 @@
 package com.flume2d.graphics;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
 
 public class Tilemap implements Graphic
 {
@@ -22,22 +22,14 @@ public class Tilemap implements Graphic
 			tiles[i] = -1;
 		dirty = false;
 	}
-
-	@Override
-	public void render(SpriteBatch b, float x, float y)
-	{
-		// if the tilemap has changed we redraw it
-		if (dirty)
-		{
-			redraw();
-		}
-//		b.drawImage(buffer, x, y, x + width, x + height, 0, 0, width, height, null);
-	}
 	
-	private void redraw()
+	@Override
+	public void render(SpriteBatch spriteBatch)
 	{
-		int tile, tileX, tileY, imgX, imgY;
+		// TODO: Render this to a buffer texture
+		int tile, tileX, tileY;
 		int tileCols = tileset.getWidth() / tileWidth;
+		TextureRegion region = new TextureRegion(tileset, 0, 0, tileWidth, tileHeight);
 		for (int i = 0; i < columns; i++)
 		{
 			for (int j = 0; j < rows; j++)
@@ -46,12 +38,10 @@ public class Tilemap implements Graphic
 				if (tile == -1) continue;
 				tileX = tile % tileCols * tileWidth;
 				tileY = (int) Math.floor(tile / tileCols) * tileHeight;
-				imgX = i * tileWidth;
-				imgY = j * tileHeight;
-//				g.drawImage(tileset,
-//					imgX, imgY, imgX + tileWidth, imgY + tileHeight,
-//					tileX, tileY, tileX + tileWidth, tileY + tileHeight,
-//					null);
+				region.setRegion(tileX, tileY, tileWidth, tileHeight);
+				spriteBatch.draw(region,
+						i * tileWidth, j * tileHeight,
+						tileWidth, tileHeight);
 			}
 		}
 		dirty = false;

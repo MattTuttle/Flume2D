@@ -85,14 +85,14 @@ public class Scene
 	
 	public void render()
 	{
-		matrix.idt();
-        matrix.setToTranslation(camera.x, camera.y, 0);
-        spriteBatch.setTransformMatrix(matrix);
-		spriteBatch.begin();
+        spriteBatch.begin();
 		Iterator<Entity> it = renderList.iterator();
 		while (it.hasNext())
 		{
 			Entity e = it.next();
+			matrix.setToTranslation(e.x - camera.x, e.y - camera.y, 0);
+			// Should this flush the sprite batch every frame?
+			spriteBatch.setTransformMatrix(matrix);
 			e.render(spriteBatch);
 		}
 		spriteBatch.end();

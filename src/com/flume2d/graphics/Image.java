@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.g2d.*;
 public class Image implements Graphic
 {
 	
-	public int frameX;
-	public int frameY;
-	public int frameWidth;
-	public int frameHeight;
-	public int imageWidth;
-	public int imageHeight;
+	public float x, y;
+	public int frameX, frameY;
+	public int frameWidth, frameHeight;
+	public int imageWidth, imageHeight;
 	
 	public float angle;
 	public float scale;
@@ -23,18 +21,22 @@ public class Image implements Graphic
 		// set default frame width to image width
 		frameWidth = imageWidth = image.getWidth();
 		frameHeight = imageHeight = image.getHeight();
-		frameX = frameY = 0;
+		x = y = frameX = frameY = 0;
 		scale = 1;
 	}
 
 	@Override
-	public void render(SpriteBatch spriteBatch, float x, float y)
+	public void render(SpriteBatch spriteBatch)
 	{
-		int sfw = (int) (frameWidth * scale);
-		int sfh = (int) (frameHeight * scale);
-		TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
-		spriteBatch.draw(image, 0, 0);
-		//spriteBatch.draw(region, x, y, -sfw/2, -sfh/2, sfw, sfh, scale, scale, angle);
+		if (scale == 1 && angle == 0)
+		{
+			spriteBatch.draw(image, x - frameHeight / 2, y - frameHeight / 2);
+		}
+		else
+		{
+			TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
+			spriteBatch.draw(region, x, y, -frameHeight / 2, -frameHeight / 2, frameHeight, frameHeight, scale, scale, angle);
+		}
 	}
 
 	@Override public void update() { }
@@ -42,6 +44,5 @@ public class Image implements Graphic
 	@Override public boolean isVisible() { return true; }
 	
 	private Texture image;
-	private int diagonal;
 
 }

@@ -61,10 +61,10 @@ public class Entity implements ISceneEntity
 		if (graphic != null && graphic.isActive()) graphic.update();
 	}
 	
-	public void render(SpriteBatch b)
+	public void render(SpriteBatch spriteBatch)
 	{
-		if (graphic != null)
-			graphic.render(b, x, y);
+		if (graphic == null) return;
+		graphic.render(spriteBatch);
 	}
 	
 	public double distanceFrom(Entity e)

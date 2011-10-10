@@ -52,7 +52,7 @@ public class Canvas implements Graphic
 	}
 
 	@Override
-	public void render(SpriteBatch b, float x, float y)
+	public void render(SpriteBatch spriteBatch)
 	{
 //		b.draw(canvas, x, y, null);
 		if (clearOnRender) clear();

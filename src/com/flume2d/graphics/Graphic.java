@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public interface Graphic
 {
 	public boolean isVisible();
-	public void render(SpriteBatch b, float x, float y);
+	public void render(SpriteBatch spriteBatch);
 	
 	public boolean isActive();
 	public void update();
