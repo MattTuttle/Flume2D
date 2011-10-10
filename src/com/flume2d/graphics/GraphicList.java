@@ -37,13 +37,13 @@ public class GraphicList implements Graphic
 	}
 
 	@Override
-	public void render(Graphics g, int x, int y)
+	public void render(int x, int y)
 	{
 		Iterator<Graphic> it = graphics.iterator();
 		while(it.hasNext())
 		{
 			Graphic graphic = (Graphic) it.next();
-			if (graphic.isVisible()) graphic.render(g, x, y);
+			if (graphic.isVisible()) graphic.render(x, y);
 			if (graphic.isActive()) graphic.update();
 		}
 	}

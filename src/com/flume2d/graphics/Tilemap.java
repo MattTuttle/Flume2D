@@ -1,16 +1,13 @@
 package com.flume2d.graphics;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import com.flume2d.Engine;
+import com.badlogic.gdx.graphics.Texture;
 
 public class Tilemap implements Graphic
 {
 	
 	public Tilemap(String filename, int width, int height, int tileWidth, int tileHeight)
 	{
-		tileset = Engine.getInstance().getImage(filename);
+		tileset = new Texture(filename);
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		
@@ -22,24 +19,22 @@ public class Tilemap implements Graphic
 		tiles = new int[columns * rows];
 		for (int i = 0; i < tiles.length; i++)
 			tiles[i] = -1;
-		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		dirty = false;
 	}
 
 	@Override
-	public void render(Graphics g, int x, int y)
+	public void render(int x, int y)
 	{
 		// if the tilemap has changed we redraw it
 		if (dirty)
 		{
 			redraw();
 		}
-		g.drawImage(buffer, x, y, x + width, x + height, 0, 0, width, height, null);
+//		g.drawImage(buffer, x, y, x + width, x + height, 0, 0, width, height, null);
 	}
 	
 	private void redraw()
 	{
-		Graphics g = buffer.getGraphics();
 		int tile, tileX, tileY, imgX, imgY;
 		int tileCols = tileset.getWidth() / tileWidth;
 		for (int i = 0; i < columns; i++)
@@ -52,10 +47,10 @@ public class Tilemap implements Graphic
 				tileY = (int) Math.floor(tile / tileCols) * tileHeight;
 				imgX = i * tileWidth;
 				imgY = j * tileHeight;
-				g.drawImage(tileset,
-					imgX, imgY, imgX + tileWidth, imgY + tileHeight,
-					tileX, tileY, tileX + tileWidth, tileY + tileHeight,
-					null);
+//				g.drawImage(tileset,
+//					imgX, imgY, imgX + tileWidth, imgY + tileHeight,
+//					tileX, tileY, tileX + tileWidth, tileY + tileHeight,
+//					null);
 			}
 		}
 		dirty = false;
@@ -95,8 +90,7 @@ public class Tilemap implements Graphic
 	private int tileHeight;
 	
 	private int[] tiles;
-	private BufferedImage tileset;
-	private BufferedImage buffer;
+	private Texture tileset;
 	private boolean dirty;
 
 }

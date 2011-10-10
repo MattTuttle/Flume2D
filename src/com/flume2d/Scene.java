@@ -74,14 +74,12 @@ public class Scene
 	
 	public void render()
 	{
-		Graphics g = Engine.getInstance().getGraphicsContext();
 		Iterator<Entity> it = renderList.iterator();
 		while (it.hasNext())
 		{
 			Entity e = it.next();
-			e.render(g, Scene.camera.x, Scene.camera.y);
+			e.render(Scene.camera.x, Scene.camera.y);
 		}
-		g.dispose();
 	}
 	
 	private void updateLists()

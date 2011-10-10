@@ -1,17 +1,14 @@
 package com.flume2d;
 
-import java.awt.*;
-import java.awt.image.*;
-
-import javax.imageio.ImageIO;
-
-import com.flume2d.utils.Input;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.*;
+import com.flume2d.utils.InputHandler;
 
 /**
  * The game engine singleton class
  * @author matt.tuttle
  */
-public class Engine extends Canvas implements Runnable
+public class Engine implements ApplicationListener
 {
 	public static int width;
 	public static int height;
@@ -22,31 +19,9 @@ public class Engine extends Canvas implements Runnable
 	/**
 	 * Constructs the engine
 	 */
-	private Engine()
+	public Engine()
 	{
-		input = new Input();
-		addKeyListener(input);
-		addFocusListener(input);
-		addMouseListener(input);
-		addMouseMotionListener(input);
-		
 		scene = new Scene(); // empty world
-		
-		emptyCursor = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "empty");
-		defaultCursor = getCursor();
-	}
-	
-	/**
-	 * Get the engine's single isntance
-	 * @return
-	 */
-	public static Engine getInstance()
-	{
-		if (instance == null)
-		{
-			instance = new Engine();
-		}
-		return instance;
 	}
 	
 	/**
@@ -71,27 +46,6 @@ public class Engine extends Canvas implements Runnable
 		Engine.height = height;
 		this.frameRate = frameRate;
 		setScreen(width, height);
-		
-		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-	}
-	
-	/**
-	 * Get a buffered image
-	 * @param filename the filename of the image to retreive
-	 * @return the image requested
-	 */
-	public BufferedImage getImage(String filename)
-	{
-		BufferedImage image = null;
-		try
-		{
-			image = ImageIO.read(this.getClass().getResource(filename));
-		}
-		catch (Exception e)
-		{
-			throw new RuntimeException(e);
-		}
-		return image;
 	}
 	
 	/**
@@ -103,52 +57,6 @@ public class Engine extends Canvas implements Runnable
 	{
 		screenWidth = width;
 		screenHeight = height;
-		Dimension size = new Dimension(width, height);
-		setSize(size);
-		setPreferredSize(size);
-	}
-	
-	private void update()
-	{
-		if (hasFocus())
-		{
-			scene.update();
-		}
-	}
-	
-	private void hideCursor()
-	{
-		setCursor(emptyCursor);
-	}
-	
-	private void showCursor()
-	{
-		setCursor(defaultCursor);
-	}
-	
-	private void render()
-	{
-		if (hadFocus != hasFocus())
-		{
-			hadFocus = !hadFocus;
-		}
-		
-		BufferStrategy bs = getBufferStrategy();
-		if (bs == null)
-		{
-			createBufferStrategy(3);
-			return;
-		}
-		
-		// clear screen
-		backBuffer.getGraphics().clearRect(0, 0, width, height);
-		scene.render();
-		
-		Graphics g = bs.getDrawGraphics();
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(backBuffer, 0, 0, screenWidth, screenHeight, null);
-		g.dispose();
-		bs.show();
 	}
 
 	public synchronized void run()
@@ -159,8 +67,6 @@ public class Engine extends Canvas implements Runnable
 		long lastTime = System.nanoTime();
 		double secondsPerTick = 1 / frameRate;
 		int tickCount = 0;
-		
-		requestFocus();
 		
 		while (running)
 		{
@@ -175,7 +81,7 @@ public class Engine extends Canvas implements Runnable
 			boolean ticked = false;
 			while (unprocessedSeconds > secondsPerTick) {
 				Engine.elapsed = secondsPerTick;
-				update();
+				scene.update();
 				unprocessedSeconds -= secondsPerTick;
 				ticked = true;
 
@@ -205,32 +111,43 @@ public class Engine extends Canvas implements Runnable
 			}
 		}
 	}
-	
-	public void start()
+
+	@Override
+	public void create()
 	{
-		if (running) return;
-		running = true;
-		thread = new Thread(this);
-		thread.start();
+		
 	}
-	
-	public void stop()
+
+	@Override
+	public void dispose()
 	{
-		if (!running) return;
+		
+	}
+
+	@Override
+	public void pause()
+	{
 		running = false;
-		try
-		{
-			thread.join();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
 	}
-	
-	public Graphics getGraphicsContext()
+
+	@Override
+	public void render()
 	{
-		return backBuffer.getGraphics();
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.graphics.getGL10().glEnable(GL10.GL_TEXTURE_2D);
+		scene.render();
+	}
+
+	@Override
+	public void resize(int width, int height)
+	{
+		setScreen(width, height);
+	}
+
+	@Override
+	public void resume()
+	{
+		running = true;
 	}
 	
 	private int screenWidth;
@@ -238,15 +155,5 @@ public class Engine extends Canvas implements Runnable
 	private float frameRate;
 	
 	private boolean running;
-	private Thread thread;
-	
-	private boolean hadFocus = false;
-	private Cursor emptyCursor, defaultCursor;
-	private static BufferedImage backBuffer;
-	private Input input;
-	
-	private static Engine instance;
-	
-	private static final long serialVersionUID = 1L;
 
 }

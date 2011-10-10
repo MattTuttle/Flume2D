@@ -50,9 +50,9 @@ public class Canvas implements Graphic
 	}
 
 	@Override
-	public void render(Graphics g, int x, int y)
+	public void render(int x, int y)
 	{
-		g.drawImage(canvas, x, y, null);
+//		g.drawImage(canvas, x, y, null);
 		if (clearOnRender) clear();
 	}
 

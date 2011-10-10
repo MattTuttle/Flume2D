@@ -1,12 +1,9 @@
 package com.flume2d.graphics;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-
+import com.badlogic.gdx.graphics.Texture;
 import com.flume2d.*;
 
-public class Image implements Graphic, ImageObserver
+public class Image implements Graphic
 {
 	
 	public int frameX;
@@ -21,7 +18,7 @@ public class Image implements Graphic, ImageObserver
 	
 	public Image(String filename)
 	{
-		image = Engine.getInstance().getImage(filename);
+		image = new Texture(filename);
 		// set default frame width to image width
 		frameWidth = imageWidth = image.getWidth();
 		frameHeight = imageHeight = image.getHeight();
@@ -30,10 +27,11 @@ public class Image implements Graphic, ImageObserver
 	}
 
 	@Override
-	public void render(Graphics g, int x, int y)
+	public void render(int x, int y)
 	{
 		int sfw = (int) (frameWidth * scale);
 		int sfh = (int) (frameHeight * scale);
+		/*
 		if (angle == 0)
 		{
 			// untransformed (much faster)
@@ -63,21 +61,14 @@ public class Image implements Graphic, ImageObserver
 				frameX, frameY, frameX + diagonal, frameY + diagonal,
 				this);
 		}
+		*/
 	}
 
 	@Override public void update() { }
 	@Override public boolean isActive() { return false; }
 	@Override public boolean isVisible() { return true; }
 	
-	@Override
-	public boolean imageUpdate(java.awt.Image image, int flags, int x, int y, int width, int height)
-	{
-		return false;
-	}
-	
-	private BufferedImage image;
-	
-	private BufferedImage transformedImage;
+	private Texture image;
 	private int diagonal;
 
 }

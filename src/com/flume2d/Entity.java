@@ -61,10 +61,10 @@ public class Entity implements ISceneEntity
 		if (graphic != null && graphic.isActive()) graphic.update();
 	}
 	
-	public void render(Graphics g, double camx, double camy)
+	public void render(double camx, double camy)
 	{
 		if (graphic != null)
-			graphic.render(g, (int)(x - camx), (int)(y - camy));
+			graphic.render((int)(x - camx), (int)(y - camy));
 	}
 	
 	public double distanceFrom(Entity e)
