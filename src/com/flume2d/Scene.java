@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.*;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.flume2d.graphics.Graphic;
 import com.flume2d.math.Vector2;
 
@@ -19,6 +20,16 @@ public class Scene
 		renderList = new LinkedList<Entity>();
 		updateList = new LinkedList<Entity>();
 		typeList = new HashMap<String, LinkedList<Entity>>();
+		
+		Matrix4 projection = new Matrix4();
+        projection.setToOrtho(0, 320, 240, 0, -1, 1);
+		spriteBatch = new SpriteBatch();
+		spriteBatch.setProjectionMatrix(projection);
+	}
+	
+	public void destroy()
+	{
+		spriteBatch.dispose();
 	}
 	
 	public void add(ISceneEntity e)
@@ -75,16 +86,14 @@ public class Scene
 	
 	public void render()
 	{
-		SpriteBatch batch = new SpriteBatch();
 		Iterator<Entity> it = renderList.iterator();
-		batch.begin();
+		spriteBatch.begin();
 		while (it.hasNext())
 		{
 			Entity e = it.next();
-			e.render(batch, Scene.camera.x, Scene.camera.y);
+			e.render(spriteBatch, Scene.camera.x, Scene.camera.y);
 		}
-		batch.end();
-		batch.dispose();
+		spriteBatch.end();
 	}
 	
 	private void updateLists()
@@ -145,6 +154,8 @@ public class Scene
 		}
 	}
 
+	private SpriteBatch spriteBatch;
+	
 	private LinkedList<ISceneEntity> added;
 	private LinkedList<ISceneEntity> removed;
 	private LinkedList<Entity> renderList;

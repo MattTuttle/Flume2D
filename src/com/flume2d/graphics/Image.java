@@ -28,12 +28,12 @@ public class Image implements Graphic
 	}
 
 	@Override
-	public void render(SpriteBatch b, int x, int y)
+	public void render(SpriteBatch batch, int x, int y)
 	{
 		int sfw = (int) (frameWidth * scale);
 		int sfh = (int) (frameHeight * scale);
 		TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
-		b.draw(region, x, y, -sfw/2, -sfh/2, sfw, sfh, scale, scale, angle);
+		batch.draw(region, x, y, -sfw/2, -sfh/2, sfw, sfh, scale, scale, angle);
 	}
 
 	@Override public void update() { }
