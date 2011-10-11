@@ -105,6 +105,18 @@ public class Scene
 		return closest;
 	}
 	
+	public Entity findAt(String type, int x, int y)
+	{
+		if (!typeList.containsKey(type)) return null;
+		Iterator<Entity> it = typeList.get(type).iterator();
+		while(it.hasNext())
+		{
+			Entity e = it.next();
+			if (e.collideAt(x, y)) return e;
+		}
+		return null;
+	}
+	
 	public Entity getByName(String name)
 	{
 		Iterator<Entity> it = updateList.iterator();

@@ -157,4 +157,10 @@ public class Polygon implements Mask
 		this.y = y;
 	}
 
+	@Override
+	public boolean collideAt(int x, int y)
+	{
+		throw new UnsupportedOperationException("Not Implemented");
+	}
+
 }

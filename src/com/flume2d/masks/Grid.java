@@ -18,4 +18,11 @@ public class Grid implements Mask
 		
 	}
 
+	@Override
+	public boolean collideAt(int x, int y)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

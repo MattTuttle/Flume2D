@@ -59,4 +59,16 @@ public class Circle implements Mask
 		this.y = y;
 	}
 
+	@Override
+	public boolean collideAt(int px, int py)
+	{
+		float distanceSquared = (x - px) * (x - px) + (y - py) * (y - py);
+		
+		// check the radius length to the distance between centers
+		if(Math.abs(distanceSquared) < radius * radius)
+			return true;
+		
+		return false;
+	}
+
 }

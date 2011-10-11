@@ -87,6 +87,13 @@ public class Entity implements ISceneEntity
 	{
 		return Math.sqrt((x - px) * (x - px) + (y - py) * (y - py));
 	}
+	
+	public boolean collideAt(int x, int y)
+	{
+		if (mask != null)
+			return mask.collideAt(x, y);
+		return false;
+	}
 
 	@Override public void setScene(Scene scene) { this.scene = scene; }
 	@Override public boolean hasScene() { return (scene != null); }

@@ -23,7 +23,7 @@ public class AABB extends Polygon
 	{
 		if (mask instanceof AABB)
 		{
-//			return collideAABB((AABB) mask);
+			return collideAABB((AABB) mask);
 		}
 		
 		// convert to polygon vertices
@@ -87,6 +87,15 @@ public class AABB extends Polygon
 		else
 			offsetx = 0;
 		return new Vector2(offsetx, offsety);
+	}
+	
+	@Override
+	public boolean collideAt(int px, int py)
+	{
+		if (px < x + halfWidth && px > x - halfWidth &&
+			py < y + halfHeight && py > y - halfHeight)
+			return true;
+		return false;
 	}
 
 }
