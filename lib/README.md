@@ -11,7 +11,3 @@ libGDX - http://code.google.com/p/libgdx/
 > gdx-natives.jar  
 > gdx.jar  
 
-
-JUnit - http://www.junit.org/
-------------------------------
-> junit-V.XX.jar
