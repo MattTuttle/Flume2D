@@ -44,7 +44,8 @@ public class Tilemap implements Graphic
 						tileWidth, tileHeight);
 			}
 		}
-		dirty = false;
+		if (dirty)
+			dirty = false;
 	}
 
 	public void setTile(int x, int y, int tile)
@@ -67,6 +68,9 @@ public class Tilemap implements Graphic
 		}
 		dirty = true;
 	}
+	
+	public int getWidth() { return width; }
+	public int getHeight() { return height; }
 	
 	@Override public void update() { }
 	@Override public boolean isActive() { return false; }

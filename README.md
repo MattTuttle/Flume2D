@@ -3,6 +3,10 @@ Flume2D
 
 This engine is available for anyone to use in their game. The code is in Java and uses AWT for rendering sprites. It is influenced from flash game engines like FlashPunk and Flixel.
 
+Currently in Alpha
+------------------------
+Flume is currently in an alpha state. This means that there are likely to be bugs and the code I push will likely break past versions. With that said if you still would like to help develop or use the engine feel free to do so and post bug reports.
+
 Features
 ------------------------
 * Sprite, Tilemap, and Canvas rendering
