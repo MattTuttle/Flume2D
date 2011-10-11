@@ -33,9 +33,9 @@ public class Scene
 	
 	public void add(ISceneEntity e)
 	{
-		if (e.hasWorld()) return;
+		if (e.hasScene()) return;
 		added.add(e);
-		e.setWorld(this);
+		e.setScene(this);
 	}
 	
 	public void remove(ISceneEntity e)
@@ -58,6 +58,51 @@ public class Scene
 	public LinkedList<Entity> getTypes(String type)
 	{
 		return typeList.get(type);
+	}
+	
+	public Entity findClosest(String type, float x, float y)
+	{
+		if (!typeList.containsKey(type)) return null;
+		
+		return findClosest(typeList.get(type), x, y);
+	}
+	
+	public Entity findClosest(String[] types, float x, float y)
+	{
+		LinkedList<Entity> list = new LinkedList<Entity>();
+		for (int i = 0; i < types.length; i++)
+		{
+			if (!typeList.containsKey(types[i])) continue;
+			Iterator<Entity> it = typeList.get(types[i]).iterator();
+			while (it.hasNext())
+			{
+				list.push(it.next());
+			}
+		}
+		
+		// check to make sure we actually populated the list
+		if (list.size() == 0) return null;
+		
+		return findClosest(list, x, y);
+	}
+	
+	public Entity findClosest(LinkedList<Entity> list, float x, float y)
+	{
+		double dist, maxDist = Double.MAX_VALUE;
+		Entity closest = null;
+		Iterator<Entity> it = list.iterator();
+		do
+		{
+			Entity e = it.next();
+			dist = (x - e.x) * (x - e.x) + (y - e.y) * (y - e.y);
+			if (dist < maxDist)
+			{
+				maxDist = dist;
+				closest = e;
+			}
+		} while(it.hasNext());
+		
+		return closest;
 	}
 	
 	public Entity getByName(String name)

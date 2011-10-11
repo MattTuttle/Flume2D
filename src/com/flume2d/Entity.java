@@ -44,8 +44,8 @@ public class Entity implements ISceneEntity
 	
 	public Entity collide(String type, boolean expel)
 	{
-		if (world == null) return null;
-		LinkedList<Entity> list = world.getTypes(type);
+		if (scene == null) return null;
+		LinkedList<Entity> list = scene.getTypes(type);
 		if (list == null) return null;
 		Iterator<Entity> it = list.iterator();
 		while (it.hasNext())
@@ -83,33 +83,16 @@ public class Entity implements ISceneEntity
 		return Math.sqrt((x - e.x) * (x - e.x) + (y - e.y) * (y - e.y));
 	}
 	
-	public double distanceFromPoint(int px, int py)
+	public double distanceFromPoint(float px, float py)
 	{
 		return Math.sqrt((x - px) * (x - px) + (y - py) * (y - py));
 	}
-	
 
-	@Override
-	public void setWorld(Scene world)
-	{
-		this.world = world;
-	}
+	@Override public void setScene(Scene scene) { this.scene = scene; }
+	@Override public boolean hasScene() { return (scene != null); }
 
-	@Override
-	public boolean hasWorld()
-	{
-		return (world != null);
-	}
-
-	@Override
-	public void added()
-	{
-	}
-
-	@Override
-	public void removed()
-	{
-	}
+	@Override public void added() { }
+	@Override public void removed() { }
 	
 	public String name;
 	public String type;
@@ -118,6 +101,6 @@ public class Entity implements ISceneEntity
 	public Graphic graphic;
 	public Mask mask;
 	
-	private Scene world;
+	protected Scene scene;
 	
 }
