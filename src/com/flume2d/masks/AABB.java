@@ -23,7 +23,7 @@ public class AABB extends Polygon
 	{
 		if (mask instanceof AABB)
 		{
-			return collideAABB((AABB) mask);
+//			return collideAABB((AABB) mask);
 		}
 		
 		// convert to polygon vertices
