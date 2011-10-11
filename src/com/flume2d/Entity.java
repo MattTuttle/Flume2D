@@ -37,7 +37,12 @@ public class Entity implements ISceneEntity
 		this.layer = 0;
 	}
 	
-	public Entity collide(String type, float x2, float y2)
+	public Entity collide(String type)
+	{
+		return collide(type, false);
+	}
+	
+	public Entity collide(String type, boolean expel)
 	{
 		if (world == null) return null;
 		LinkedList<Entity> list = world.getTypes(type);
@@ -50,8 +55,11 @@ public class Entity implements ISceneEntity
 			result = mask.collide(e.mask);
 			if (result != null)
 			{
-				x += result.x;
-				y += result.y;
+				if (expel)
+				{
+					x += result.x;
+					y += result.y;
+				}
 				return e;
 			}
 		}
