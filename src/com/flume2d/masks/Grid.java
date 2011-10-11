@@ -12,4 +12,10 @@ public class Grid implements Mask
 		return null;
 	}
 
+	@Override
+	public void setPosition(float x, float y) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -28,14 +28,16 @@ public class Image implements Graphic
 	@Override
 	public void render(SpriteBatch spriteBatch)
 	{
+		float originX = x - frameWidth / 2;
+		float originY = y - frameHeight / 2;
 		if (scale == 1 && angle == 0)
 		{
-			spriteBatch.draw(image, x - frameHeight / 2, y - frameHeight / 2);
+			spriteBatch.draw(image, originX, originY);
 		}
 		else
 		{
 			TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
-			spriteBatch.draw(region, x, y, -frameHeight / 2, -frameHeight / 2, frameHeight, frameHeight, scale, scale, angle);
+			spriteBatch.draw(region, originX, originY, frameWidth / 2, frameHeight / 2, frameWidth, frameHeight, scale, scale, angle);
 		}
 	}
 

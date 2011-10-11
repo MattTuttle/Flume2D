@@ -37,10 +37,12 @@ public class Entity implements ISceneEntity
 		this.layer = 0;
 	}
 	
-	public Entity collide(String type, int x, int y)
+	public Entity collide(String type, float x2, float y2)
 	{
 		if (world == null) return null;
-		Iterator<Entity> it = world.getTypes(type).iterator();
+		LinkedList<Entity> list = world.getTypes(type);
+		if (list == null) return null;
+		Iterator<Entity> it = list.iterator();
 		while (it.hasNext())
 		{
 			Entity e = it.next();
@@ -59,6 +61,7 @@ public class Entity implements ISceneEntity
 	public void update()
 	{
 		if (graphic != null && graphic.isActive()) graphic.update();
+		if (mask != null) mask.setPosition(x, y);
 	}
 	
 	public void render(SpriteBatch spriteBatch)

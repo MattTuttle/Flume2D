@@ -10,7 +10,10 @@ public class AABB extends Polygon
 	
 	public AABB(int width, int height)
 	{
+		super();
 		vertices = new Vector2[4];
+		for (int i = 0; i < 4; i++)
+			vertices[i] = new Vector2();
 		halfWidth = width / 2;
 		halfHeight = height / 2;
 	}
@@ -34,7 +37,7 @@ public class AABB extends Polygon
 	// fast AABB collision check
 	public Vector2 collideAABB(AABB mask)
 	{
-		int min1, max1, min2, max2;
+		float min1, max1, min2, max2;
 		
 		// check x-axis
 		if (x < mask.x)
@@ -55,7 +58,7 @@ public class AABB extends Polygon
 		if (min1 - max2 > 0 || min2 - max1 > 0)
 			return null;
 		
-		int offsetx = (max2 - min1) * -1;
+		float offsetx = (max2 - min1) * -1;
 		
 		// check y-axis
 		if (y < mask.y)
@@ -76,7 +79,7 @@ public class AABB extends Polygon
 		if (min1 - max2 > 0 || min2 - max1 > 0)
 			return null;
 		
-		int offsety = (max2 - min1) * -1;
+		float offsety = (max2 - min1) * -1;
 		
 		// Push the object on one axis only
 		if (offsetx < offsety)

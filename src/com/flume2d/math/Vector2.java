@@ -17,6 +17,11 @@ public class Vector2
 		this.y = y;
 	}
 	
+	public String toString()
+	{
+		return "(" + x + ", " + y + ")";
+	}
+	
 	public float length()
 	{
 		return (float) Math.sqrt(x * x + y * y);

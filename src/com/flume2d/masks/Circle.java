@@ -5,9 +5,8 @@ import com.flume2d.math.Vector2;
 public class Circle implements Mask
 {
 	
-	public int x;
-	public int y;
-	public int radius;
+	public float x, y;
+	public float radius;
 	
 	public Circle(int radius)
 	{
@@ -38,17 +37,26 @@ public class Circle implements Mask
 
 	public Vector2 collideCircle(Circle mask)
 	{
-		int totalRadius = radius + mask.radius;
-		int distanceSquared = (x - mask.x) * (x - mask.x) + (y - mask.y) * (y - mask.y);
+		float totalRadius = radius + mask.radius;
+		float distanceSquared = (x - mask.x) * (x - mask.x) + (y - mask.y) * (y - mask.y);
 		
 		// check the radius length to the distance between centers
-		if(distanceSquared < totalRadius * totalRadius)
+		if(Math.abs(distanceSquared) < totalRadius * totalRadius)
 		{
-			float difference = totalRadius - (float) Math.sqrt(distanceSquared);
-			return new Vector2((mask.x - x) * difference, (mask.y - y) * difference);
+			float dist = (float) Math.sqrt(distanceSquared);
+			float difference = totalRadius - dist;
+			if (dist == 0) dist = 0.1f;
+			return new Vector2((x - mask.x) / dist * difference, (y - mask.y) / dist * difference);
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void setPosition(float x, float y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 
 }

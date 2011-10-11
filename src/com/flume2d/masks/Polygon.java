@@ -6,8 +6,7 @@ import com.flume2d.math.Vector2;
 public class Polygon implements Mask
 {
 	
-	public int x;
-	public int y;
+	public float x, y;
 	
 	public Vector2[] vertices;
 	
@@ -50,7 +49,7 @@ public class Polygon implements Mask
 			// find the side's axis vector
 			axis = mask.vertices[i].normal(
 					// make sure the vertex exists
-					(i >= mask.vertices.length) ? mask.vertices[0] : mask.vertices[i+1]
+					(i >= mask.vertices.length - 1) ? mask.vertices[0] : mask.vertices[i+1]
 				);
 			
 			// project polygons onto the axis
@@ -118,7 +117,7 @@ public class Polygon implements Mask
 			// find the side's axis vector
 			axis = vertices[i].normal(
 					// make sure the vertex exists
-					(i >= vertices.length) ? vertices[0] : vertices[i+1]
+					(i >= vertices.length - 1) ? vertices[0] : vertices[i+1]
 				);
 		
 			r1 = project(axis, vertices);
@@ -142,13 +141,20 @@ public class Polygon implements Mask
 	{
 		if (mask instanceof Circle)
 		{
-			collideCircle((Circle) mask);
+			return collideCircle((Circle) mask);
 		}
 		else if (mask instanceof Polygon)
 		{
-			collidePolygon((Polygon) mask);
+			return collidePolygon((Polygon) mask);
 		}
 		return null;
+	}
+
+	@Override
+	public void setPosition(float x, float y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 
 }
