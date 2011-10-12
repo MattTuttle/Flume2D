@@ -38,9 +38,21 @@ public class Scene
 		e.setScene(this);
 	}
 	
+	public void add(ISceneEntity[] e)
+	{
+		for (int i = 0; i < e.length; i++)
+			add(e);
+	}
+	
 	public void remove(ISceneEntity e)
 	{
 		removed.add(e);
+	}
+	
+	public void remove(ISceneEntity[] e)
+	{
+		for (int i = 0; i < e.length; i++)
+			remove(e);
 	}
 	
 	public Entity addGraphic(Graphic graphic)
