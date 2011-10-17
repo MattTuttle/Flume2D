@@ -83,7 +83,7 @@ public abstract class UdpConnection implements Closeable
 		connected = false;
 	}
 	
-	protected abstract void parseData(ByteStream data, SocketAddress inetAddress) throws IOException;
+	protected abstract void parseData(ByteStream data, SocketAddress inetAddress);
 	
 	protected void sendData(byte[] data, SocketAddress address)
 	{

@@ -1,6 +1,5 @@
 package com.flume2d.net;
 
-import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 
@@ -13,7 +12,7 @@ public class Client extends UdpConnection
 	}
 
 	@Override
-	protected void parseData(ByteStream data, SocketAddress address) throws IOException
+	protected void parseData(ByteStream data, SocketAddress address)
 	{
 		serverAddr = address;
 		
@@ -32,20 +31,19 @@ public class Client extends UdpConnection
 	
 	private void ackServer(int sequence)
 	{
-		ByteBuffer data = ByteBuffer.allocate(12);
+		ByteBuffer data = ByteBuffer.allocate(8);
 		data.putInt(Protocol.ACK);
 		data.putInt(sequence);
-		data.putInt(0); // last sequences
 		sendData(data.array(), serverAddr);
 	}
 
-	public void update(GameState state)
+	public void update(IGameState state)
 	{
 		sendData(state.deltaCompress(lastState), serverAddr);
 	}
 	
 	private SocketAddress serverAddr;
-	private GameState lastState;
+	private IGameState lastState;
 	private int lastSequence = 0;
 
 }

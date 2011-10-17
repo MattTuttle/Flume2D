@@ -10,11 +10,12 @@ public class Server extends UdpConnection
 	{
 
 		public SocketAddress address;
-		public GameState lastAckState;
 		
 		public ClientConnection(SocketAddress address)
 		{
 			this.address = address;
+			states = new LinkedList<IGameState>();
+			lastAck = -1;
 		}
 		
 		public void handlePacket(int packetType, ByteStream stream)
@@ -24,8 +25,20 @@ public class Server extends UdpConnection
 				case Protocol.DISCONNECT:
 					clients.remove(this);
 					break;
+				case Protocol.ACK:
+					lastAck = stream.readInt();
+					break;
 			}
 		}
+		
+		public void sendPacket(IGameState state)
+		{
+			IGameState lastAckState = states.get(lastAck);
+			sendData(state.deltaCompress(lastAckState), address);
+		}
+		
+		private LinkedList<IGameState> states;
+		private int lastAck;
 		
 	}
 
@@ -54,14 +67,14 @@ public class Server extends UdpConnection
 		}
 	}
 	
-	public void update(GameState gameState)
+	public void update(IGameState gameState)
 	{
 		// send unique delta state to each client
 		Iterator<ClientConnection> it = clients.iterator();
 		while (it.hasNext())
 		{
 			ClientConnection client = it.next();
-			sendData(gameState.deltaCompress(client.lastAckState), client.address);
+			client.sendPacket(gameState);
 		}
 	}
 	
