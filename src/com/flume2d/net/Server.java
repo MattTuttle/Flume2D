@@ -1,11 +1,7 @@
 package com.flume2d.net;
 
-import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.util.*;
-
-import com.flume2d.net.*;
 
 public class Server extends UdpConnection
 {
@@ -16,9 +12,19 @@ public class Server extends UdpConnection
 		public SocketAddress address;
 		public GameState lastAckState;
 		
-		public void handleData(ByteStream stream)
+		public ClientConnection(SocketAddress address)
 		{
-			
+			this.address = address;
+		}
+		
+		public void handlePacket(int packetType, ByteStream stream)
+		{
+			switch (packetType)
+			{
+				case Protocol.DISCONNECT:
+					clients.remove(this);
+					break;
+			}
 		}
 		
 	}
@@ -30,14 +36,21 @@ public class Server extends UdpConnection
 	}
 
 	@Override
-	protected void parseData(ByteStream stream, SocketAddress address) throws IOException
+	protected void parseData(ByteStream stream, SocketAddress address)
 	{
+		int packetType = stream.readInt();
+		if (Protocol.CONNECT == packetType)
+		{
+			clients.add(new ClientConnection(address));
+			return;
+		}
+		
 		Iterator<ClientConnection> it = clients.iterator();
 		while (it.hasNext())
 		{
 			ClientConnection client = it.next();
 			if (client.address == address)
-				client.handleData(stream);
+				client.handlePacket(packetType, stream);
 		}
 	}
 	

@@ -4,9 +4,6 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 
-import com.flume2d.net.*;
-import com.flume2d.utils.*;
-
 public class Client extends UdpConnection
 {
 
@@ -36,7 +33,7 @@ public class Client extends UdpConnection
 	private void ackServer(int sequence)
 	{
 		ByteBuffer data = ByteBuffer.allocate(12);
-		data.putInt(Protocol.ACK.id);
+		data.putInt(Protocol.ACK);
 		data.putInt(sequence);
 		data.putInt(0); // last sequences
 		sendData(data.array(), serverAddr);

@@ -1,14 +1,11 @@
 package com.flume2d.net;
 
-public enum Protocol
+public class Protocol
 {
-	ACK   (0x01, false),
-	INPUT (0x03, true);
+	public final static int DISCONNECT = 0x00;
+	public final static int CONNECT    = 0x01;
+	public final static int ACK        = 0x02;
 	
-	Protocol(int id, boolean reliable)
-	{
-		this.id = id;
-	}
-	
-	public int id;
+	// client commands
+	public final static int INPUT      = 0x30;
 }
