@@ -46,7 +46,7 @@ public abstract class UdpConnection implements Closeable
 			DatagramPacket packet = new DatagramPacket(buff, buff.length);
 			sock.receive(packet);
 			ByteStream stream = new ByteStream(packet.getData());
-			parseData(stream);
+			parseData(stream, packet.getSocketAddress());
 		}
 	}
 	
@@ -57,7 +57,6 @@ public abstract class UdpConnection implements Closeable
 
 	public UdpConnection(InetSocketAddress address)
 	{
-		this.address = address;
 		connected = false;
 		reader = new Reader();
 		reader.start();
@@ -84,16 +83,28 @@ public abstract class UdpConnection implements Closeable
 		connected = false;
 	}
 	
-	protected abstract void parseData(ByteStream data) throws IOException;
+	protected abstract void parseData(ByteStream data, SocketAddress inetAddress) throws IOException;
 	
-	protected void sendData(byte[] data) throws IOException
+	protected void sendData(byte[] data, SocketAddress address)
 	{
-		DatagramPacket req = new DatagramPacket(data, data.length, address);
-		DatagramSocket sock = getSocket();
-		sock.send(req);
+		DatagramPacket req;
+		DatagramSocket sock;
+		try
+		{
+			req = new DatagramPacket(data, data.length, address);
+			sock = getSocket();
+			sock.send(req);
+		}
+		catch (SocketException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	private InetSocketAddress address;
 	private DatagramSocket socket;
 	private Reader reader;
 	private boolean connected;
