@@ -14,7 +14,6 @@ public class Server extends UdpConnection
 		public ClientConnection(SocketAddress address)
 		{
 			this.address = address;
-			states = new LinkedList<IGameState>();
 			lastAck = -1;
 		}
 		
@@ -33,11 +32,12 @@ public class Server extends UdpConnection
 		
 		public void sendPacket(IGameState state)
 		{
-			IGameState lastAckState = states.get(lastAck);
+			IGameState lastAckState = null;
+			if (states.containsKey(lastAck))
+				lastAckState = states.get(lastAck);
 			sendData(state.deltaCompress(lastAckState), address);
 		}
 		
-		private LinkedList<IGameState> states;
 		private int lastAck;
 		
 	}
@@ -46,6 +46,8 @@ public class Server extends UdpConnection
 	{
 		super(ip, port);
 		clients = new LinkedList<ClientConnection>();
+		states = new HashMap<Integer, IGameState>();
+		sequence = 0;
 	}
 
 	@Override
@@ -69,6 +71,7 @@ public class Server extends UdpConnection
 	
 	public void update(IGameState gameState)
 	{
+		states.put(sequence, gameState);
 		// send unique delta state to each client
 		Iterator<ClientConnection> it = clients.iterator();
 		while (it.hasNext())
@@ -76,8 +79,11 @@ public class Server extends UdpConnection
 			ClientConnection client = it.next();
 			client.sendPacket(gameState);
 		}
+		sequence += 1;
 	}
 	
 	private LinkedList<ClientConnection> clients;
+	private HashMap<Integer, IGameState> states;
+	private int sequence;
 	
 }
