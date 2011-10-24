@@ -36,6 +36,7 @@ public class Polygon implements Mask
 
 	public Vector2 collidePolygon(Polygon mask)
 	{
+		// TODO: fix collision
 		Range r1 = null, r2 = null;
 		Vector2 axis = null;
 		Vector2 offset = new Vector2(x - mask.x, y - mask.y);
@@ -74,6 +75,7 @@ public class Polygon implements Mask
 
 	public Vector2 collideCircle(Circle mask)
 	{
+		// TODO: fix collision
 		Vector2 closestVector = new Vector2();
 		float testDistance = Integer.MAX_VALUE;
 		Vector2 offset = new Vector2(x - mask.x, y - mask.y);
