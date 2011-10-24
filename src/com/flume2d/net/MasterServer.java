@@ -72,6 +72,7 @@ public class MasterServer extends Connection
 	
 	private void listGames(ByteBuffer buffer)
 	{
+		System.out.println("Listing games...");
 		int gameType = buffer.get();
 		
 		if ( games.containsKey(gameType) )
@@ -103,6 +104,7 @@ public class MasterServer extends Connection
 
 	private void registerGame(ByteBuffer buffer)
 	{
+		System.out.println("Registering game...");
 		int gameType = buffer.get();
 		
 		Game game = new Game();
