@@ -11,11 +11,12 @@ public class AABB extends Polygon
 	public AABB(int width, int height)
 	{
 		super();
+		halfWidth = width / 2;
+		halfHeight = height / 2;
+		
 		vertices = new Vector2[4];
 		for (int i = 0; i < 4; i++)
 			vertices[i] = new Vector2();
-		halfWidth = width / 2;
-		halfHeight = height / 2;
 	}
 	
 	@Override
