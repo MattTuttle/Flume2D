@@ -25,4 +25,10 @@ public class Grid implements Mask
 		return false;
 	}
 
+	@Override
+	public boolean overlaps(Mask mask) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -25,17 +25,17 @@ public class Circle implements Mask
 	{
 		if (mask instanceof Circle)
 		{
-			return collideCircle((Circle) mask);
+			return collide((Circle) mask);
 		}
 		else if (mask instanceof Polygon)
 		{
 			// we only need this code in one place
-			return ((Polygon)mask).collideCircle(this);
+			return ((Polygon)mask).collide(this);
 		}
 		return null;
 	}
 
-	public Vector2 collideCircle(Circle mask)
+	public Vector2 collide(Circle mask)
 	{
 		float totalRadius = radius + mask.radius;
 		float distanceSquared = (x - mask.x) * (x - mask.x) + (y - mask.y) * (y - mask.y);
@@ -50,6 +50,34 @@ public class Circle implements Mask
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public boolean overlaps(Mask mask)
+	{
+		if (mask instanceof Circle)
+		{
+			return overlaps((Circle) mask);
+		}
+		else if (mask instanceof Polygon)
+		{
+			// we only need this code in one place
+			return ((Polygon) mask).collide(this) != null;
+		}
+		return false;
+	}
+	
+	public boolean overlaps(Circle mask)
+	{
+		float totalRadius = radius + mask.radius;
+		float distanceSquared = (x - mask.x) * (x - mask.x) + (y - mask.y) * (y - mask.y);
+		
+		// check the radius length to the distance between centers
+		if(Math.abs(distanceSquared) < totalRadius * totalRadius)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	@Override

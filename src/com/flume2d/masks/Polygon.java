@@ -151,6 +151,12 @@ public class Polygon implements Mask
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean overlaps(Mask mask)
+	{
+		return (collide(mask) != null);
+	}
 
 	@Override
 	public void setPosition(float x, float y)
