@@ -1,14 +1,18 @@
 package com.flume2d.masks;
 
-import com.flume2d.math.Range;
-import com.flume2d.math.Vector2;
+import com.flume2d.math.*;
 
-public class Polygon implements Mask
+public class Polygon extends Mask
 {
 	
 	public float x, y;
-	
+	public Rectangle bounds;
 	public Vector2[] vertices;
+	
+	public Polygon()
+	{
+		bounds = new Rectangle();
+	}
 	
 	public Range project(Vector2 axis, Vector2[] list)
 	{
@@ -159,16 +163,29 @@ public class Polygon implements Mask
 	}
 
 	@Override
-	public void setPosition(float x, float y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
 	public boolean collideAt(int x, int y)
 	{
 		throw new UnsupportedOperationException("Not Implemented");
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		Range xr = new Range();
+		Range yr = new Range();
+		for (int i = 0; i < vertices.length; i++)
+		{
+			if (vertices[i].x < xr.min)
+				xr.min = vertices[i].x;
+			if (vertices[i].x > xr.max)
+				xr.max = vertices[i].x;
+			
+			if (vertices[i].y < yr.min)
+				yr.min = vertices[i].y;
+			if (vertices[i].y > yr.max)
+				yr.max = vertices[i].y;
+		}
+		return bounds;
 	}
 
 }

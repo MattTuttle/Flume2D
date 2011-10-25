@@ -1,12 +1,13 @@
 package com.flume2d.masks;
 
-import com.flume2d.math.Vector2;
+import com.flume2d.math.*;
 
-public class Circle implements Mask
+public class Circle extends Mask
 {
 	
 	public float x, y;
 	public float radius;
+	public Rectangle bounds;
 	
 	public Circle(int radius)
 	{
@@ -18,6 +19,7 @@ public class Circle implements Mask
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
+		bounds = new Rectangle(0, 0, radius * 2, radius * 2);
 	}
 
 	@Override
@@ -81,13 +83,6 @@ public class Circle implements Mask
 	}
 
 	@Override
-	public void setPosition(float x, float y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
 	public boolean collideAt(int px, int py)
 	{
 		float distanceSquared = (x - px) * (x - px) + (y - py) * (y - py);
@@ -97,6 +92,14 @@ public class Circle implements Mask
 			return true;
 		
 		return false;
+	}
+	
+	@Override
+	public Rectangle getBounds()
+	{
+		bounds.x = x - radius;
+		bounds.y = y - radius;
+		return bounds;
 	}
 
 }

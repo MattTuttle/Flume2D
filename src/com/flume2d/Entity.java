@@ -111,7 +111,11 @@ public class Entity implements ISceneEntity
 	public void update()
 	{
 		if (graphic != null && graphic.isActive()) graphic.update();
-		if (mask != null) mask.setPosition(x, y);
+		if (mask != null)
+		{
+			mask.x = x;
+			mask.y = y;
+		}
 	}
 	
 	/**

@@ -1,12 +1,12 @@
 package com.flume2d.masks;
 
-import com.flume2d.math.Vector2;
+import com.flume2d.math.*;
 
 public class AABB extends Polygon
 {
 	
-	public int halfWidth;
-	public int halfHeight;
+	protected int halfWidth;
+	protected int halfHeight;
 	
 	/**
 	 * Constructs a new AABB
@@ -16,8 +16,11 @@ public class AABB extends Polygon
 	public AABB(int width, int height)
 	{
 		super();
+		
 		halfWidth = width / 2;
 		halfHeight = height / 2;
+		bounds.width = width;
+		bounds.height = height;
 		
 		vertices = new Vector2[4];
 		for (int i = 0; i < 4; i++)
@@ -162,6 +165,14 @@ public class AABB extends Polygon
 			py < y + halfHeight && py > y - halfHeight)
 			return true;
 		return false;
+	}
+	
+	@Override
+	public Rectangle getBounds()
+	{
+		bounds.x = x - halfWidth;
+		bounds.y = y - halfHeight;
+		return bounds;
 	}
 
 }
