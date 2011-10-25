@@ -8,6 +8,11 @@ public class AABB extends Polygon
 	public int halfWidth;
 	public int halfHeight;
 	
+	/**
+	 * Constructs a new AABB
+	 * @param width the full width of the AABB
+	 * @param height the full height of the AABB
+	 */
 	public AABB(int width, int height)
 	{
 		super();
@@ -19,24 +24,62 @@ public class AABB extends Polygon
 			vertices[i] = new Vector2();
 	}
 	
+	/**
+	 * Convert to polygon vertices
+	 */
+	protected void setVertices()
+	{
+		vertices[0].x = x - halfWidth; vertices[0].y = y - halfHeight;
+		vertices[1].x = x + halfWidth; vertices[1].y = y - halfHeight;
+		vertices[2].x = x + halfWidth; vertices[2].y = y + halfHeight;
+		vertices[3].x = x - halfWidth; vertices[3].y = y + halfHeight;
+	}
+	
+	/**
+	 *  REALLY fast AABB collision check
+	 *  @param mask the mask to check for overlaps
+	 *  @return whether the mask overlaps the other
+	 */
+	@Override
+	public boolean overlaps(Mask mask)
+	{
+		if (mask instanceof AABB)
+		{
+			AABB box = (AABB) mask;
+			if (x - halfWidth > box.x + box.halfWidth) return false;
+			if (x + halfWidth < box.x - box.halfWidth) return false;
+			if (y - halfWidth > box.y + box.halfWidth) return false;
+			if (y + halfWidth < box.y - box.halfWidth) return false;
+			return true;
+		}
+		
+		setVertices();
+		return super.overlaps(mask);
+	}
+	
+	/**
+	 * Checks if the AABB is colliding with another mask
+	 * @param mask the mask to check collision against
+	 * @return whether we collide or not
+	 */
 	@Override
 	public Vector2 collide(Mask mask)
 	{
 		if (mask instanceof AABB)
 		{
-			return collideAABB((AABB) mask);
+			return collide((AABB) mask);
 		}
 		
-		// convert to polygon vertices
-		vertices[0].x = x - halfWidth; vertices[0].y = y - halfHeight;
-		vertices[1].x = x + halfWidth; vertices[1].y = y - halfHeight;
-		vertices[2].x = x + halfWidth; vertices[2].y = y + halfHeight;
-		vertices[3].x = x - halfWidth; vertices[3].y = y + halfHeight;
+		setVertices();
 		return super.collide(mask);
 	}
 	
-	// *really* fast AABB collision check
-	public Vector2 collideAABB(AABB mask)
+	/**
+	 * fast AABB collision check using SAT
+	 * @param mask the AABB mask to collide with
+	 * @return whether we collide with the mask or not
+	 */
+	public Vector2 collide(AABB mask)
 	{
 		float min1, max1,
 			min2, max2,
@@ -106,6 +149,12 @@ public class AABB extends Polygon
 		return new Vector2(offsetx, offsety);
 	}
 	
+	/**
+	 * Check if the AABB collides with a point
+	 * @param px the point's x-axis value
+	 * @param py the point's y-axis value
+	 * @return whether the point collides with the AABB
+	 */
 	@Override
 	public boolean collideAt(int px, int py)
 	{
