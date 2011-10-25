@@ -10,12 +10,36 @@ import com.flume2d.math.Vector2;
 public class Scene
 {
 	
+	/**
+	 * Class that sorts entities by z-index
+	 */
+	private static class EntityZSort implements Comparator<Entity>
+	{
+		
+		public static EntityZSort getInstance()
+		{
+			if (instance == null)
+				instance = new EntityZSort();
+			return instance;
+		}
+
+		@Override
+		public int compare(Entity e1, Entity e2) {
+			if (e1.layer > e2.layer) return 1;
+			if (e1.layer < e2.layer) return -1;
+			return 0;
+		}
+		
+		private static EntityZSort instance;
+
+	}
+	
 	public static Vector2 camera = new Vector2();
 	
 	public Scene()
 	{
-		added = new LinkedList<ISceneEntity>();
-		removed = new LinkedList<ISceneEntity>();
+		added = new LinkedList<Entity>();
+		removed = new LinkedList<Entity>();
 		renderList = new LinkedList<Entity>();
 		updateList = new LinkedList<Entity>();
 		typeList = new HashMap<String, LinkedList<Entity>>();
@@ -31,25 +55,25 @@ public class Scene
 		spriteBatch.dispose();
 	}
 	
-	public void add(ISceneEntity e)
+	public void add(Entity e)
 	{
 		if (e.hasScene()) return;
 		added.add(e);
 		e.setScene(this);
 	}
 	
-	public void add(ISceneEntity[] e)
+	public void add(Entity[] e)
 	{
 		for (int i = 0; i < e.length; i++)
 			add(e);
 	}
 	
-	public void remove(ISceneEntity e)
+	public void remove(Entity e)
 	{
 		removed.add(e);
 	}
 	
-	public void remove(ISceneEntity[] e)
+	public void remove(Entity[] e)
 	{
 		for (int i = 0; i < e.length; i++)
 			remove(e);
@@ -169,7 +193,7 @@ public class Scene
 	
 	private void updateLists()
 	{
-		Iterator<ISceneEntity> it;
+		Iterator<Entity> it;
 		
 		// add any new entities
 		it = added.iterator();
@@ -228,8 +252,8 @@ public class Scene
 	private Matrix4 matrix = new Matrix4();
 	private SpriteBatch spriteBatch;
 	
-	private LinkedList<ISceneEntity> added;
-	private LinkedList<ISceneEntity> removed;
+	private LinkedList<Entity> added;
+	private LinkedList<Entity> removed;
 	private LinkedList<Entity> renderList;
 	private LinkedList<Entity> updateList;
 	private HashMap<String, LinkedList<Entity>> typeList;

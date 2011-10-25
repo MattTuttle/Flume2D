@@ -7,7 +7,7 @@ import com.flume2d.graphics.Graphic;
 import com.flume2d.masks.*;
 import com.flume2d.math.*;
 
-public class Entity implements ISceneEntity
+public class Entity
 {
 	
 	public float x;
@@ -162,11 +162,11 @@ public class Entity implements ISceneEntity
 		return false;
 	}
 
-	@Override public void setScene(Scene scene) { this.scene = scene; }
-	@Override public boolean hasScene() { return (scene != null); }
+	public void setScene(Scene scene) { this.scene = scene; }
+	public boolean hasScene() { return (scene != null); }
 
-	@Override public void added() { }
-	@Override public void removed() { }
+	public void added() { }
+	public void removed() { }
 	
 	public String name;
 	public String type;

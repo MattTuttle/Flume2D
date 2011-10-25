@@ -1,7 +1,6 @@
 package com.flume2d.masks;
 
-import com.flume2d.math.Rectangle;
-import com.flume2d.math.Vector2;
+import com.flume2d.math.*;
 
 public abstract class Mask
 {
