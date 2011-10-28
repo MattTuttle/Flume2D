@@ -68,6 +68,7 @@ public class Spritemap extends Image
 			if (currentAnim.delay > 0 && frameTime > currentAnim.delay)
 				advance();
 		}
+		super.update();
 	}
 	
 	public void advance()

@@ -34,7 +34,7 @@ public class Scene
 
 	}
 	
-	public static Vector2 camera = new Vector2();
+	public Vector2 camera = new Vector2();
 	
 	public Scene()
 	{
@@ -58,8 +58,8 @@ public class Scene
 	public void add(Entity e)
 	{
 		if (e.hasScene()) return;
-		added.add(e);
 		e.setScene(this);
+		added.add(e);
 	}
 	
 	public void add(Entity[] e)
@@ -193,10 +193,13 @@ public class Scene
 	
 	private void updateLists()
 	{
+		LinkedList<Entity> list;
 		Iterator<Entity> it;
 		
 		// add any new entities
-		it = added.iterator();
+		list = (LinkedList<Entity>) added.clone();
+		added.clear();
+		it = list.iterator();
 		while (it.hasNext())
 		{
 			Entity e = (Entity) it.next();
@@ -209,10 +212,11 @@ public class Scene
 			typeList.get(e.type).add(e);
 			e.added();
 		}
-		added.clear();
 		
 		// remove any old entities
-		it = removed.iterator();
+		list = (LinkedList<Entity>) removed.clone();
+		removed.clear();
+		it = list.iterator();
 		while (it.hasNext())
 		{
 			Entity e = (Entity) it.next();
@@ -221,7 +225,6 @@ public class Scene
 			typeList.get(e.type).remove(e);
 			e.removed();
 		}
-		removed.clear();
 		
 		// sort render list by z-index
 		Collections.sort(renderList, EntityZSort.getInstance());

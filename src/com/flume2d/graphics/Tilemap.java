@@ -14,35 +14,29 @@ public class Tilemap implements Graphic
 		
 		columns = (int) Math.ceil(width / tileWidth);
 		rows = (int) Math.ceil(height / tileHeight);
-		this.width = columns * tileWidth;
-		this.height = rows * tileHeight;
+		this.width = columns * tileWidth - tileWidth;
+		this.height = rows * tileHeight - tileHeight;
 		
 		tiles = new int[columns * rows];
-		for (int i = 0; i < tiles.length; i++)
-			tiles[i] = -1;
 		dirty = false;
 	}
 	
 	@Override
 	public void render(SpriteBatch spriteBatch)
 	{
-		// TODO: Render this to a buffer texture
-		int tile, tileX, tileY;
 		int tileCols = tileset.getWidth() / tileWidth;
-		TextureRegion region = new TextureRegion(tileset, 0, 0, tileWidth, tileHeight);
-		for (int i = 0; i < columns; i++)
+		TextureRegion region = new TextureRegion(tileset);
+		for (int i = 0; i < columns * rows; i++)
 		{
-			for (int j = 0; j < rows; j++)
-			{
-				tile = tiles[j * columns + i];
-				if (tile == -1) continue;
-				tileX = tile % tileCols * tileWidth;
-				tileY = (int) Math.floor(tile / tileCols) * tileHeight;
-				region.setRegion(tileX, tileY, tileWidth, tileHeight);
-				spriteBatch.draw(region,
-						i * tileWidth, j * tileHeight,
-						tileWidth, tileHeight);
-			}
+			region.setRegion(
+					(tiles[i] % tileCols) * tileWidth,  // x
+					(tiles[i] / tileCols) * tileHeight, // y
+					tileWidth, tileHeight);
+			
+			spriteBatch.draw(region,
+					(i % columns) * tileWidth,  // x
+					height - (i / columns) * tileHeight, // y
+					tileWidth, tileHeight);
 		}
 		if (dirty)
 			dirty = false;
@@ -51,7 +45,7 @@ public class Tilemap implements Graphic
 	public void setTile(int x, int y, int tile)
 	{
 		int index = y * columns + x;
-		if (index > tiles.length) return;
+		if (index >= tiles.length) return;
 		
 		tiles[index] = tile;
 		dirty = true;
