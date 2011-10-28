@@ -30,6 +30,16 @@ public class GraphicList implements Graphic
 	{
 		graphics.remove(g);
 	}
+	
+	public void clear()
+	{
+		graphics.clear();
+	}
+	
+	public int size()
+	{
+		return graphics.size();
+	}
 
 	@Override
 	public boolean isVisible()

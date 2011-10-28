@@ -197,33 +197,39 @@ public class Scene
 		Iterator<Entity> it;
 		
 		// add any new entities
-		list = (LinkedList<Entity>) added.clone();
-		added.clear();
-		it = list.iterator();
-		while (it.hasNext())
+		if (added.size() > 0)
 		{
-			Entity e = (Entity) it.next();
-			updateList.add(e);
-			renderList.add(e);
-			if (!typeList.containsKey(e.type))
+			list = (LinkedList<Entity>) added.clone();
+			added.clear();
+			it = list.iterator();
+			while (it.hasNext())
 			{
-				typeList.put(e.type, new LinkedList<Entity>());
+				Entity e = (Entity) it.next();
+				updateList.add(e);
+				renderList.add(e);
+				if (!typeList.containsKey(e.type))
+				{
+					typeList.put(e.type, new LinkedList<Entity>());
+				}
+				typeList.get(e.type).add(e);
+				e.added();
 			}
-			typeList.get(e.type).add(e);
-			e.added();
 		}
 		
 		// remove any old entities
-		list = (LinkedList<Entity>) removed.clone();
-		removed.clear();
-		it = list.iterator();
-		while (it.hasNext())
+		if (removed.size() > 0)
 		{
-			Entity e = (Entity) it.next();
-			updateList.remove(e);
-			renderList.remove(e);
-			typeList.get(e.type).remove(e);
-			e.removed();
+			list = (LinkedList<Entity>) removed.clone();
+			removed.clear();
+			it = list.iterator();
+			while (it.hasNext())
+			{
+				Entity e = (Entity) it.next();
+				updateList.remove(e);
+				renderList.remove(e);
+				typeList.get(e.type).remove(e);
+				e.removed();
+			}
 		}
 		
 		// sort render list by z-index
