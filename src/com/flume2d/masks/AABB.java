@@ -32,10 +32,10 @@ public class AABB extends Polygon
 	 */
 	protected void setVertices()
 	{
-		vertices[0].x = x - halfWidth; vertices[0].y = y - halfHeight;
-		vertices[1].x = x + halfWidth; vertices[1].y = y - halfHeight;
-		vertices[2].x = x + halfWidth; vertices[2].y = y + halfHeight;
-		vertices[3].x = x - halfWidth; vertices[3].y = y + halfHeight;
+		vertices[0].x = parent.x - halfWidth; vertices[0].y = parent.y - halfHeight;
+		vertices[1].x = parent.x + halfWidth; vertices[1].y = parent.y - halfHeight;
+		vertices[2].x = parent.x + halfWidth; vertices[2].y = parent.y + halfHeight;
+		vertices[3].x = parent.x - halfWidth; vertices[3].y = parent.y + halfHeight;
 	}
 	
 	/**
@@ -49,10 +49,10 @@ public class AABB extends Polygon
 		if (mask instanceof AABB)
 		{
 			AABB box = (AABB) mask;
-			if (x - halfWidth > box.x + box.halfWidth) return false;
-			if (x + halfWidth < box.x - box.halfWidth) return false;
-			if (y - halfWidth > box.y + box.halfWidth) return false;
-			if (y + halfWidth < box.y - box.halfWidth) return false;
+			if (parent.x - halfWidth > box.parent.x + box.halfWidth) return false;
+			if (parent.x + halfWidth < box.parent.x - box.halfWidth) return false;
+			if (parent.y - halfWidth > box.parent.y + box.halfWidth) return false;
+			if (parent.y + halfWidth < box.parent.y - box.halfWidth) return false;
 			return true;
 		}
 		
@@ -89,23 +89,23 @@ public class AABB extends Polygon
 			offsetx = 0, offsety = 0;
 		
 		// check x-axis
-		if (x < mask.x)
+		if (parent.x < mask.parent.x)
 		{
-			min1 = x;
-			max1 = x + halfWidth;
-			min2 = mask.x - mask.halfWidth;
-			max2 = mask.x;
+			min1 = parent.x;
+			max1 = parent.x + halfWidth;
+			min2 = mask.parent.x - mask.halfWidth;
+			max2 = mask.parent.x;
 			offsetx = min2 - max1;
 			// test collision
 			if (min1 - max2 > 0 || min2 - max1 > 0)
 				return null;
 		}
-		else if (x > mask.x)
+		else if (parent.x > mask.parent.x)
 		{
-			min1 = x - halfWidth;
-			max1 = x;
-			min2 = mask.x;
-			max2 = mask.x + mask.halfWidth;
+			min1 = parent.x - halfWidth;
+			max1 = parent.x;
+			min2 = mask.parent.x;
+			max2 = mask.parent.x + mask.halfWidth;
 			offsetx = max2 - min1;
 			// test collision
 			if (min1 - max2 > 0 || min2 - max1 > 0)
@@ -113,23 +113,23 @@ public class AABB extends Polygon
 		}
 		
 		// check y-axis
-		if (y < mask.y)
+		if (parent.y < mask.parent.y)
 		{
-			min1 = y;
-			max1 = y + halfHeight;
-			min2 = mask.y - mask.halfHeight;
-			max2 = mask.y;
+			min1 = parent.y;
+			max1 = parent.y + halfHeight;
+			min2 = mask.parent.y - mask.halfHeight;
+			max2 = mask.parent.y;
 			offsety = min2 - max1;
 			// test collision
 			if (min1 - max2 > 0 || min2 - max1 > 0)
 				return null;
 		}
-		else if (y > mask.y)
+		else if (parent.y > mask.parent.y)
 		{
-			min1 = y - halfHeight;
-			max1 = y;
-			min2 = mask.y;
-			max2 = mask.y + mask.halfHeight;
+			min1 = parent.y - halfHeight;
+			max1 = parent.y;
+			min2 = mask.parent.y;
+			max2 = mask.parent.y + mask.halfHeight;
 			offsety = max2 - min1;
 			// test collision
 			if (min1 - max2 > 0 || min2 - max1 > 0)
@@ -161,8 +161,8 @@ public class AABB extends Polygon
 	@Override
 	public boolean collideAt(int px, int py)
 	{
-		if (px < x + halfWidth && px > x - halfWidth &&
-			py < y + halfHeight && py > y - halfHeight)
+		if (px < parent.x + halfWidth && px > parent.x - halfWidth &&
+			py < parent.y + halfHeight && py > parent.y - halfHeight)
 			return true;
 		return false;
 	}
@@ -170,8 +170,8 @@ public class AABB extends Polygon
 	@Override
 	public Rectangle getBounds()
 	{
-		bounds.x = x - halfWidth;
-		bounds.y = y - halfHeight;
+		bounds.x = parent.x - halfWidth;
+		bounds.y = parent.y - halfHeight;
 		return bounds;
 	}
 

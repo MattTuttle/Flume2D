@@ -45,6 +45,6 @@ public class Image implements Graphic
 	@Override public boolean isActive() { return false; }
 	@Override public boolean isVisible() { return true; }
 	
-	private Texture image;
+	protected Texture image;
 
 }

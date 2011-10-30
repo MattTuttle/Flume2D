@@ -5,19 +5,11 @@ import com.flume2d.math.*;
 public class Circle extends Mask
 {
 	
-	public float x, y;
 	public float radius;
 	public Rectangle bounds;
 	
 	public Circle(int radius)
 	{
-		this(0, 0, radius);
-	}
-	
-	public Circle(int x, int y, int radius)
-	{
-		this.x = x;
-		this.y = y;
 		this.radius = radius;
 		bounds = new Rectangle(0, 0, radius * 2, radius * 2);
 	}
@@ -40,7 +32,7 @@ public class Circle extends Mask
 	public Vector2 collide(Circle mask)
 	{
 		float totalRadius = radius + mask.radius;
-		float distanceSquared = (x - mask.x) * (x - mask.x) + (y - mask.y) * (y - mask.y);
+		float distanceSquared = (parent.x - mask.parent.x) * (parent.x - mask.parent.x) + (parent.y - mask.parent.y) * (parent.y - mask.parent.y);
 		
 		// check the radius length to the distance between centers
 		if(Math.abs(distanceSquared) < totalRadius * totalRadius)
@@ -48,7 +40,7 @@ public class Circle extends Mask
 			float dist = (float) Math.sqrt(distanceSquared);
 			float difference = totalRadius - dist;
 			if (dist == 0) dist = 0.1f;
-			return new Vector2((x - mask.x) / dist * difference, (y - mask.y) / dist * difference);
+			return new Vector2((parent.x - mask.parent.x) / dist * difference, (parent.y - mask.parent.y) / dist * difference);
 		}
 		
 		return null;
@@ -72,7 +64,7 @@ public class Circle extends Mask
 	public boolean overlaps(Circle mask)
 	{
 		float totalRadius = radius + mask.radius;
-		float distanceSquared = (x - mask.x) * (x - mask.x) + (y - mask.y) * (y - mask.y);
+		float distanceSquared = (parent.x - mask.parent.x) * (parent.x - mask.parent.x) + (parent.y - mask.parent.y) * (parent.y - mask.parent.y);
 		
 		// check the radius length to the distance between centers
 		if(Math.abs(distanceSquared) < totalRadius * totalRadius)
@@ -85,7 +77,7 @@ public class Circle extends Mask
 	@Override
 	public boolean collideAt(int px, int py)
 	{
-		float distanceSquared = (x - px) * (x - px) + (y - py) * (y - py);
+		float distanceSquared = (parent.x - px) * (parent.x - px) + (parent.y - py) * (parent.y - py);
 		
 		// check the radius length to the distance between centers
 		if(Math.abs(distanceSquared) < radius * radius)
@@ -97,8 +89,8 @@ public class Circle extends Mask
 	@Override
 	public Rectangle getBounds()
 	{
-		bounds.x = x - radius;
-		bounds.y = y - radius;
+		bounds.x = parent.x - radius;
+		bounds.y = parent.y - radius;
 		return bounds;
 	}
 

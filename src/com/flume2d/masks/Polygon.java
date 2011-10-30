@@ -5,7 +5,6 @@ import com.flume2d.math.*;
 public class Polygon extends Mask
 {
 	
-	public float x, y;
 	public Rectangle bounds;
 	public Vector2[] vertices;
 	
@@ -43,7 +42,7 @@ public class Polygon extends Mask
 		// TODO: fix collision
 		Range r1 = null, r2 = null;
 		Vector2 axis = null;
-		Vector2 offset = new Vector2(x - mask.x, y - mask.y);
+		Vector2 offset = new Vector2(parent.x - mask.parent.x, parent.y - mask.parent.y);
 
 		// add padding if this is a line
 		if (vertices.length == 2) padding(vertices);
@@ -82,7 +81,7 @@ public class Polygon extends Mask
 		// TODO: fix collision
 		Vector2 closestVector = new Vector2();
 		float testDistance = Integer.MAX_VALUE;
-		Vector2 offset = new Vector2(x - mask.x, y - mask.y);
+		Vector2 offset = new Vector2(parent.x - mask.parent.x, parent.y - mask.parent.y);
 		
 		// add padding if this is a line
 		if (vertices.length == 2) padding(vertices);
@@ -90,16 +89,17 @@ public class Polygon extends Mask
 		// find the closest vertex to use to find the normal
 		for (int i = 0; i < vertices.length; i++)
 		{
-			float distance = (mask.x - (x + vertices[i].x)) * (mask.x - (x + vertices[i].x)) + (mask.y - (y + vertices[i].y)) * (mask.y - (y + vertices[i].y));
+			float distance = (mask.parent.x - (parent.x + vertices[i].x)) * (mask.parent.x - (parent.x + vertices[i].x))
+					+ (mask.parent.y - (parent.y + vertices[i].y)) * (mask.parent.y - (parent.y + vertices[i].y));
 			if (distance < testDistance)
 			{
 				testDistance = distance;
-				closestVector.x = x + vertices[i].x;
-				closestVector.y = y + vertices[i].y;
+				closestVector.x = parent.x + vertices[i].x;
+				closestVector.y = parent.y + vertices[i].y;
 			}
 		}
 		
-		Vector2 axis = new Vector2(closestVector.x - mask.x, closestVector.y - mask.y);
+		Vector2 axis = new Vector2(closestVector.x - mask.parent.x, closestVector.y - mask.parent.y);
 		axis.normalize();
 		
 		// project the polygon and circle onto the axis

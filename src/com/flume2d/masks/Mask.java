@@ -1,16 +1,15 @@
 package com.flume2d.masks;
 
+import com.flume2d.Entity;
 import com.flume2d.math.*;
 
 public abstract class Mask
 {
 	
-	public float x;
-	public float y;
+	public Entity parent;
 	
 	public Mask()
 	{
-		x = y = 0;
 	}
 	
 	public abstract boolean overlaps(Mask mask);

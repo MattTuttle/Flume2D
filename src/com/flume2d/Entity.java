@@ -111,11 +111,6 @@ public class Entity
 	public void update()
 	{
 		if (graphic != null && graphic.isActive()) graphic.update();
-		if (mask != null)
-		{
-			mask.x = x;
-			mask.y = y;
-		}
 	}
 	
 	/**
@@ -161,6 +156,17 @@ public class Entity
 			return mask.collideAt(x, y);
 		return false;
 	}
+	
+	public void setMask(Mask mask)
+	{
+		this.mask = mask;
+		this.mask.parent = this;
+	}
+	
+	public void setGraphic(Graphic graphic)
+	{
+		this.graphic = graphic;
+	}
 
 	public void setScene(Scene scene) { this.scene = scene; }
 	public boolean hasScene() { return (scene != null); }
@@ -172,8 +178,8 @@ public class Entity
 	public String type;
 	public int layer;
 
-	public Graphic graphic;
-	public Mask mask;
+	private Graphic graphic;
+	private Mask mask;
 	
 	protected Scene scene;
 	
