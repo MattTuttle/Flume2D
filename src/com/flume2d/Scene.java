@@ -10,30 +10,6 @@ import com.flume2d.math.Vector2;
 public class Scene
 {
 	
-	/**
-	 * Class that sorts entities by z-index
-	 */
-	private static class EntityZSort implements Comparator<Entity>
-	{
-		
-		public static EntityZSort getInstance()
-		{
-			if (instance == null)
-				instance = new EntityZSort();
-			return instance;
-		}
-
-		@Override
-		public int compare(Entity e1, Entity e2) {
-			if (e1.layer > e2.layer) return 1;
-			if (e1.layer < e2.layer) return -1;
-			return 0;
-		}
-		
-		private static EntityZSort instance;
-
-	}
-	
 	public Vector2 camera = new Vector2();
 	
 	public Scene()
@@ -191,27 +167,44 @@ public class Scene
 		spriteBatch.end();
 	}
 	
-	private void updateLists()
+	private void addType(Entity e)
 	{
 		LinkedList<Entity> list;
-		Iterator<Entity> it;
+		if (typeList.containsKey(e.type))
+		{
+			list = typeList.get(e.type);
+		}
+		else
+		{
+			list = typeList.put(e.type, new LinkedList<Entity>());
+		}
+		list.add(e);
+	}
+	
+	private void removeType(Entity e)
+	{
+		if (typeList.containsKey(e.type))
+		{
+			typeList.get(e.type).remove(e);
+		}
+	}
+	
+	private void updateLists()
+	{
+		Object[] list;
 		
 		// add any new entities
 		if (added.size() > 0)
 		{
-			list = (LinkedList<Entity>) added.clone();
+			// copy list to array for traversal
+			list = added.toArray();
 			added.clear();
-			it = list.iterator();
-			while (it.hasNext())
+			for (int i = 0; i < list.length; i++)
 			{
-				Entity e = (Entity) it.next();
+				Entity e = (Entity) list[i];
 				updateList.add(e);
 				renderList.add(e);
-				if (!typeList.containsKey(e.type))
-				{
-					typeList.put(e.type, new LinkedList<Entity>());
-				}
-				typeList.get(e.type).add(e);
+				addType(e);
 				e.added();
 			}
 		}
@@ -219,15 +212,15 @@ public class Scene
 		// remove any old entities
 		if (removed.size() > 0)
 		{
-			list = (LinkedList<Entity>) removed.clone();
+			// copy list to array for traversal
+			list = removed.toArray();
 			removed.clear();
-			it = list.iterator();
-			while (it.hasNext())
+			for (int i = 0; i < list.length; i++)
 			{
-				Entity e = (Entity) it.next();
+				Entity e = (Entity) list[i];
 				updateList.remove(e);
 				renderList.remove(e);
-				typeList.get(e.type).remove(e);
+				removeType(e);
 				e.removed();
 			}
 		}
@@ -251,11 +244,40 @@ public class Scene
 				// check that the entity is in the right type group
 				if (key != e.type)
 				{
-					list.remove(e);
-					typeList.get(e.type).add(e);
+					it2.remove();
+					addType(e);
 				}
 			}
+			// remove an empty list
+			if (list.size() == 0)
+			{
+				typeList.remove(key);
+			}
 		}
+	}
+	
+	/**
+	 * Class that sorts entities by z-index
+	 */
+	private static class EntityZSort implements Comparator<Entity>
+	{
+		
+		public static EntityZSort getInstance()
+		{
+			if (instance == null)
+				instance = new EntityZSort();
+			return instance;
+		}
+
+		@Override
+		public int compare(Entity e1, Entity e2) {
+			if (e1.layer > e2.layer) return 1;
+			if (e1.layer < e2.layer) return -1;
+			return 0;
+		}
+		
+		private static EntityZSort instance;
+
 	}
 
 	private Matrix4 matrix = new Matrix4();

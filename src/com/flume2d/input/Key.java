@@ -1,4 +1,4 @@
-package com.flume2d.utils;
+package com.flume2d.input;
 
 import com.badlogic.gdx.Input.Keys;
 

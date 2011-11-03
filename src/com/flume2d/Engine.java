@@ -2,7 +2,7 @@ package com.flume2d;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
-import com.flume2d.utils.Input;
+import com.flume2d.input.Input;
 
 /**
  * The game engine singleton class
