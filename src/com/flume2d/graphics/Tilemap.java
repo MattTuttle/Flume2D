@@ -68,7 +68,7 @@ public class Tilemap implements Graphic, Disposable
 		int tx, ty, txp;
 		int tile, tileX, tileY;
 		TextureRegion region = new TextureRegion(tileset);
-		int tileCols = tileset.getWidth() / tileWidth;
+		int tileCols = tileset.getWidth() / (tileWidth + spacing);
 		
 		// clear the sprite batch before rendering to a buffer
 		spriteBatch.flush();
