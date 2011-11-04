@@ -9,6 +9,7 @@ public class Input implements InputProcessor
 	private static boolean[] keys = new boolean[256];
 	private static int scrollAmount;
 	public static HashMap<Integer, Touch> touches = new HashMap<Integer, Touch>();
+	public static boolean touched = false;
 	
 	private static HashMap<String, int[]> keymap = new HashMap<String, int[]>();
 	private static LinkedList<TypeWriter> writers = new LinkedList<TypeWriter>();
@@ -52,6 +53,11 @@ public class Input implements InputProcessor
 	public static int getScrollAmount()
 	{
 		return scrollAmount;
+	}
+	
+	public static void update()
+	{
+		touched = false;
 	}
 
 	@Override
@@ -108,6 +114,7 @@ public class Input implements InputProcessor
 			touch.button = button;
 			touches.put(pointer, touch);
 		}
+		touched = true;
 		return true;
 	}
 

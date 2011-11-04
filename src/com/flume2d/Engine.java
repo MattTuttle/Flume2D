@@ -48,6 +48,7 @@ public class Engine implements ApplicationListener
 				newScene = null;
 			}
 			scene.update();
+			Input.update();
 			elapsed -= frameRate;
 		}
 		
