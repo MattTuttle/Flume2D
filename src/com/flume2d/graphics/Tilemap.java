@@ -65,18 +65,17 @@ public class Tilemap implements Graphic, Disposable
 	
 	public void drawMap(SpriteBatch spriteBatch)
 	{
-		int tx, ty, txp;
 		int tile, tileX, tileY;
 		TextureRegion region = new TextureRegion(tileset);
-		int tileCols = tileset.getWidth() / (tileWidth + spacing);
+		int tileCols = (tileset.getWidth() - margin * 2) / (tileWidth + spacing);
 		
 		// clear the sprite batch before rendering to a buffer
 		spriteBatch.flush();
 		buffer.begin();
-		for (tx = 0; tx < columns; tx++)
+		
+		for (int tx = 0; tx < columns; tx++)
 		{
-			txp = tx * tileWidth;
-			for (ty = 0; ty < rows; ty++)
+			for (int ty = 0; ty < rows; ty++)
 			{
 				tile = tiles[tx][ty];
 				if (tile == -1) continue; // skip empty tiles
@@ -89,9 +88,10 @@ public class Tilemap implements Graphic, Disposable
 						tileY * tileHeight + spacing * tileY + margin,
 						tileWidth, tileHeight);
 				region.flip(false, true);
-				spriteBatch.draw(region, txp, ty * tileHeight);
+				spriteBatch.draw(region, tx * tileWidth, ty * tileHeight);
 			}
 		}
+		
 		// flush the sprite batch onto the buffer
 		spriteBatch.flush();
 		buffer.end();
