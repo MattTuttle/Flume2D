@@ -4,10 +4,11 @@ import java.util.*;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.utils.Disposable;
 import com.flume2d.graphics.Graphic;
 import com.flume2d.math.Vector2;
 
-public class Scene
+public class Scene implements Disposable
 {
 	
 	public Vector2 camera = new Vector2();
@@ -26,9 +27,16 @@ public class Scene
 		spriteBatch.setProjectionMatrix(projection);
 	}
 	
-	public void destroy()
+	@Override
+	public void dispose()
 	{
 		spriteBatch.dispose();
+		Iterator<Entity> it = updateList.iterator();
+		while (it.hasNext())
+		{
+			Entity e = it.next();
+			e.dispose();
+		}
 	}
 	
 	public void add(Entity e)

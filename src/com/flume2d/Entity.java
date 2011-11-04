@@ -3,11 +3,12 @@ package com.flume2d;
 import java.util.*;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 import com.flume2d.graphics.Graphic;
 import com.flume2d.masks.*;
 import com.flume2d.math.*;
 
-public class Entity
+public class Entity implements Disposable
 {
 	
 	public float x;
@@ -166,6 +167,11 @@ public class Entity
 	public void setGraphic(Graphic graphic)
 	{
 		this.graphic = graphic;
+	}
+	
+	public void dispose()
+	{
+		if (graphic != null) graphic.dispose();
 	}
 
 	public void setScene(Scene scene) { this.scene = scene; }

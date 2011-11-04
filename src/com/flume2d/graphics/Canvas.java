@@ -1,8 +1,6 @@
 package com.flume2d.graphics;
 
-import java.awt.*;
-import java.awt.image.*;
-
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Canvas implements Graphic
@@ -15,7 +13,8 @@ public class Canvas implements Graphic
 	
 	public Canvas(int width, int height, boolean clearOnRender)
 	{
-		canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		canvas = new Pixmap(width, height, Pixmap.Format.RGB565);
+		texture = new Texture(canvas);
 		this.clearOnRender = clearOnRender;
 	}
 	
@@ -27,22 +26,22 @@ public class Canvas implements Graphic
 	
 	public void lineTo(int x, int y)
 	{
-		canvas.getGraphics().drawLine(posx, posy, x, y);
+		canvas.drawLine(posx, posy, x, y);
 	}
 	
 	public void fillRect(int width, int height)
 	{
-		canvas.getGraphics().fillRect(posx, posy, width, height);
+		canvas.fillRectangle(posx, posy, width, height);
 	}
 	
-	public void setColor(int rgb)
+	public void setColor(float r, float g, float b, float a)
 	{
-		canvas.getGraphics().setColor(new Color(rgb));
+		canvas.setColor(r, g, b, a);
 	}
 	
 	public void clear()
 	{
-		canvas.getGraphics().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+//		canvas.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class Canvas implements Graphic
 	@Override
 	public void render(SpriteBatch spriteBatch)
 	{
-//		b.draw(canvas, x, y, null);
+		spriteBatch.draw(texture, 0, 0);
 		if (clearOnRender) clear();
 	}
 
@@ -69,9 +68,16 @@ public class Canvas implements Graphic
 	{
 	}
 	
-	private BufferedImage canvas;
-	private int posx;
-	private int posy;
+	@Override
+	public void dispose()
+	{
+		texture.dispose();
+		canvas.dispose();
+	}
+	
+	private Pixmap canvas;
+	private Texture texture;
+	private int posx, posy;
 	private boolean clearOnRender;
 
 }

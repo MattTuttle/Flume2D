@@ -35,6 +35,12 @@ public class Image implements Graphic
 		region.flip(false, true);
 		spriteBatch.draw(region, originX, originY, frameWidth / 2, frameHeight / 2, frameWidth, frameHeight, scale, scale, angle);
 	}
+	
+	@Override
+	public void dispose()
+	{
+		image.dispose();
+	}
 
 	@Override public void update() { }
 	@Override public boolean isActive() { return false; }

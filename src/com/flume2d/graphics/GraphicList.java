@@ -28,6 +28,7 @@ public class GraphicList implements Graphic
 	
 	public void remove(Graphic g)
 	{
+		g.dispose();
 		graphics.remove(g);
 	}
 	
@@ -39,6 +40,18 @@ public class GraphicList implements Graphic
 	public int size()
 	{
 		return graphics.size();
+	}
+	
+	@Override
+	public void dispose()
+	{
+		Iterator<Graphic> it = graphics.iterator();
+		while(it.hasNext())
+		{
+			Graphic graphic = it.next();
+			graphic.dispose();
+			it.remove();
+		}
 	}
 
 	@Override
@@ -53,7 +66,7 @@ public class GraphicList implements Graphic
 		Iterator<Graphic> it = graphics.iterator();
 		while(it.hasNext())
 		{
-			Graphic graphic = (Graphic) it.next();
+			Graphic graphic = it.next();
 			if (graphic.isVisible()) graphic.render(spriteBatch);
 			if (graphic.isActive()) graphic.update();
 		}

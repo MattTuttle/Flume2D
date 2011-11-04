@@ -13,8 +13,6 @@ public class Engine implements ApplicationListener
 	public static int width;
 	public static int height;
 	public static float elapsed = 0;
-	
-	public Scene scene;
 
 	@Override
 	public void create()
@@ -28,7 +26,7 @@ public class Engine implements ApplicationListener
 	@Override
 	public void dispose()
 	{
-		scene.destroy();
+		scene.dispose();
 	}
 
 	@Override
@@ -43,6 +41,12 @@ public class Engine implements ApplicationListener
 		elapsed += Gdx.graphics.getDeltaTime();
 		while(elapsed > frameRate)
 		{
+			if (newScene != null)
+			{
+				scene.dispose();
+				scene = newScene;
+				newScene = null;
+			}
 			scene.update();
 			elapsed -= frameRate;
 		}
@@ -67,7 +71,17 @@ public class Engine implements ApplicationListener
 		return running;
 	}
 	
+	public static void setScene(Scene newScene)
+	{
+		if (Engine.scene == null)
+			Engine.scene = newScene;
+		else
+			Engine.newScene = newScene;
+	}
+	
 	private float frameRate = 1.0f / 60.0f;
 	private boolean running;
+	private static Scene scene;
+	private static Scene newScene;
 
 }
