@@ -30,15 +30,10 @@ public class Image implements Graphic
 	{
 		float originX = x - frameWidth / 2;
 		float originY = y - frameHeight / 2;
-//		if (scale == 1 && angle == 0)
-		{
-//			spriteBatch.draw(image, originX, originY);
-		}
-//		else
-		{
-			TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
-			spriteBatch.draw(region, originX, originY, frameWidth / 2, frameHeight / 2, frameWidth, frameHeight, scale, scale, angle);
-		}
+		
+		TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
+		region.flip(false, true);
+		spriteBatch.draw(region, originX, originY, frameWidth / 2, frameHeight / 2, frameWidth, frameHeight, scale, scale, angle);
 	}
 
 	@Override public void update() { }

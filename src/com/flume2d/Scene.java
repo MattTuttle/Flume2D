@@ -23,7 +23,7 @@ public class Scene
 		Matrix4 projection = new Matrix4();
         projection.setToOrtho(0, Engine.width, Engine.height, 0, -1, 1);
 		spriteBatch = new SpriteBatch();
-//		spriteBatch.setProjectionMatrix(projection);
+		spriteBatch.setProjectionMatrix(projection);
 	}
 	
 	public void destroy()
@@ -176,7 +176,8 @@ public class Scene
 		}
 		else
 		{
-			list = typeList.put(e.type, new LinkedList<Entity>());
+			list = new LinkedList<Entity>();
+			typeList.put(e.type, list);
 		}
 		list.add(e);
 	}
