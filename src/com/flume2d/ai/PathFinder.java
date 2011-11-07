@@ -95,7 +95,7 @@ public class PathFinder
 				return rebuildPath(currentNode);
 			}
 			
-			closed.offer(currentNode);
+			closed.add(currentNode);
 			
 			for (PathNode n : getNeighbors(currentNode))
 			{
