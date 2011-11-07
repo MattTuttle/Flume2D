@@ -33,8 +33,8 @@ public class Entity implements Disposable
 	{
 		this.x = x;
 		this.y = y;
-		this.graphic = graphic;
-		this.mask = mask;
+		setGraphic(graphic);
+		setMask(mask);
 		this.layer = 0;
 	}
 	
