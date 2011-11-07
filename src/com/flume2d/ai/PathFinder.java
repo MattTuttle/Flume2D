@@ -20,7 +20,7 @@ package com.flume2d.ai;
 
 import java.util.*;
 
-import com.flume2d.graphics.Tilemap;
+import com.flume2d.ai.heuristic.ManhattanMethod;
 
 /*
  * Example.
@@ -33,6 +33,7 @@ public class PathFinder
 	private LinkedList<PathNode> closed;
 	
 	private IWalkable walkable;
+	private IHeuristic heuristic;
 	
 	private static int COST_ORTHOGONAL = 10;
 	private static int COST_DIAGONAL = 14;
@@ -45,21 +46,31 @@ public class PathFinder
 	
 	public PathFinder(int columns, int rows, IWalkable walkable)
 	{
+		this(columns, rows, walkable, new ManhattanMethod());
+	}
+	
+	public PathFinder(int columns, int rows, IWalkable walkable, IHeuristic heuristic)
+	{
 		this.columns = columns;
 		this.rows = rows;
 		this.walkable = walkable;
+		this.heuristic = heuristic;
 		
 		// Initialize node array;
 		nodes = new PathNode[columns][rows];
 		for (int x = 0; x < columns; x++)
 			for (int y = 0; y < rows; y++)
 				nodes[x][y] = new PathNode(x, y);
+		
+		open = new LinkedList<PathNode>();
+		closed = new LinkedList<PathNode>();
 	}
 	
 	public List<PathNode> findPath(int startX, int startY, int destX, int destY)
 	{
-		open = new LinkedList<PathNode>();
-		closed = new LinkedList<PathNode>();
+		// make sure the open/closed lists are empty
+		open.clear();
+		closed.clear();
 		
 		// nullify the node parents
 		for (int x = 0; x < columns; x++)
@@ -72,12 +83,12 @@ public class PathFinder
 		open.push(start);
 		
 		start.g = 0;
-		start.h = heuristic(start, dest);
+		start.h = heuristic.run(start, dest);
 		start.f = start.h;
 		
 		while (open.size() > 0)
 		{
-			int f = Integer.MAX_VALUE;
+			double f = Double.MAX_VALUE;
 			PathNode currentNode = null;
 			
 			// choose the node with the lesser f cost
@@ -112,14 +123,14 @@ public class PathFinder
 					open.push(n);
 					n.parent = currentNode;
 					n.g = g;
-					n.h = heuristic(n, dest);
+					n.h = heuristic.run(n, dest);
 					n.f = n.g + n.h;
 				}
 				else if (g < n.g)
 				{
 					n.parent = currentNode;
 					n.g = g;
-					n.h = heuristic(n, dest);
+					n.h = heuristic.run(n, dest);
 					n.f = n.g + n.h;
 				}
 			}
@@ -127,12 +138,12 @@ public class PathFinder
 		
 		if (calculateNearestPoint)
 		{
-			int min = Integer.MAX_VALUE;
+			double min = Double.MAX_VALUE;
 			PathNode nearestNode = null;
 			
 			for (PathNode c : closed)
 			{
-				int dist = heuristic(c, dest);
+				double dist = heuristic.run(c, dest);
 				if (dist < min)
 				{
 					min = dist;
@@ -144,13 +155,18 @@ public class PathFinder
 		
 		return null;
 	}
+	
+	private enum Direction
+	{
+		None,
+		Vertical,
+		Horizontal
+	}
 
-	private List<PathNode> rebuildPath(PathNode dest) {
+	private List<PathNode> rebuildPath(PathNode dest) 
+	{
 		LinkedList<PathNode> path = new LinkedList<PathNode>();
-		int dir = 0;
-		
-		int DIR_HORIZ = 1;
-		int DIR_VERT = 2;
+		Direction dir = Direction.None;
 		
 		if (dest == null)
 			return null;
@@ -158,15 +174,15 @@ public class PathFinder
 		PathNode n = dest;
 		while (n.parent != null)
 		{
-			if (n.y == n.parent.y && dir != DIR_VERT)
+			if (n.y == n.parent.y && dir != Direction.Vertical)
 			{
 				path.push(n);
-				dir = DIR_VERT;
+				dir = Direction.Vertical;
 			}
-			if (n.x == n.parent.x && dir != DIR_HORIZ)
+			if (n.x == n.parent.x && dir != Direction.Horizontal)
 			{
 				path.push(n);
-				dir = DIR_HORIZ;
+				dir = Direction.Horizontal;
 			}
 			
 			n = n.parent;
@@ -175,6 +191,11 @@ public class PathFinder
 		return path;
 	}
 
+	/**
+	 * Gets the node's neighbors
+	 * @param node the node to get neighbors for
+	 * @return A list of neighboring nodes that are walkable
+	 */
 	private List<PathNode> getNeighbors(PathNode node)
 	{
 		int x = node.x;
@@ -234,11 +255,6 @@ public class PathFinder
 			}
 		}
 		return neighbors;
-	}
-
-	private int heuristic(PathNode start, PathNode dest)
-	{
-		return Math.abs(start.x - dest.x) + Math.abs(start.y - dest.y);
 	}
 
 }

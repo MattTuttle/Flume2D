@@ -5,9 +5,9 @@ public class PathNode
 	public int x;
 	public int y;
 	
-	public int f;
+	public double f;
 	public int g;
-	public int h;
+	public double h;
 	public int cost;
 	
 	public PathNode parent;

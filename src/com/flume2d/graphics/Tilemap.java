@@ -53,25 +53,21 @@ public class Tilemap implements Graphic, Disposable
 	{
 		if (tileset == null) return;
 		
-		if (dirty)
+//		if (dirty)
 		{
-			drawMap(spriteBatch);
+			drawBatch(spriteBatch);
 			dirty = false;
 		}
 		
-		int x = 0, y = 0;
-		spriteBatch.draw(buffer.getColorBufferTexture(), x, y);
+//		int x = 0, y = 0;
+//		spriteBatch.draw(buffer.getColorBufferTexture(), x, y);
 	}
 	
-	public void drawMap(SpriteBatch spriteBatch)
+	public void drawBatch(SpriteBatch spriteBatch)
 	{
 		int tile, tileX, tileY;
 		TextureRegion region = new TextureRegion(tileset);
 		int tileCols = (tileset.getWidth() - margin * 2) / (tileWidth + spacing);
-		
-		// clear the sprite batch before rendering to a buffer
-		spriteBatch.flush();
-		buffer.begin();
 		
 		for (int tx = 0; tx < columns; tx++)
 		{
@@ -91,6 +87,16 @@ public class Tilemap implements Graphic, Disposable
 				spriteBatch.draw(region, tx * tileWidth, ty * tileHeight);
 			}
 		}
+	}
+	
+	public void drawMap(SpriteBatch spriteBatch)
+	{
+		
+		// clear the sprite batch before rendering to a buffer
+		spriteBatch.flush();
+		buffer.begin();
+		
+		drawBatch(spriteBatch);
 		
 		// flush the sprite batch onto the buffer
 		spriteBatch.flush();
@@ -130,8 +136,8 @@ public class Tilemap implements Graphic, Disposable
 	@Override public boolean isActive() { return false; }
 	@Override public boolean isVisible() { return true; }
 	
-	private int columns;
-	private int rows;
+	public int columns;
+	public int rows;
 	
 	private int width;
 	private int height;
