@@ -56,7 +56,7 @@ public class PathFinder
 		this.walkable = walkable;
 		this.heuristic = heuristic;
 		
-		// Initialize node array;
+		// Initialize node array
 		nodes = new PathNode[columns][rows];
 		for (int x = 0; x < columns; x++)
 			for (int y = 0; y < rows; y++)
@@ -105,11 +105,10 @@ public class PathFinder
 		PathNode start = nodes[startX][startY];
 		PathNode dest = nodes[destX][destY];
 		
-		open.add(start);
-		
 		start.g = 0;
 		start.h = heuristic.run(start, dest);
 		start.f = start.h;
+		open.add(start);
 		
 		while (open.size() > 0)
 		{
