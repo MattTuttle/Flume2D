@@ -66,21 +66,46 @@ public class PathFinder
 		closed = new PriorityQueue<PathNode>();
 	}
 	
+	/**
+	 * Cleans up the past run by setting parent values to null
+	 * and clearing the open/closed lists
+	 */
+	private void cleanup()
+	{
+		Iterator<PathNode> it;
+		
+		it = closed.iterator();
+		while (it.hasNext())
+		{
+			PathNode node = it.next();
+			node.parent = null;
+			it.remove();
+		}
+		
+		it = open.iterator();
+		while (it.hasNext())
+		{
+			PathNode node = it.next();
+			node.parent = null;
+			it.remove();
+		}
+	}
+	
+	/**
+	 * Find a path from given coordinates
+	 * @param startX the starting coord x-axis value
+	 * @param startY the starting coord y-axis value
+	 * @param destX the ending coord x-axis value
+	 * @param destY the ending coord y-axis value
+	 * @return a list of path nodes to follow
+	 */
 	public List<PathNode> findPath(int startX, int startY, int destX, int destY)
 	{
-		// make sure the open/closed lists are empty
-		open.clear();
-		closed.clear();
-		
-		// nullify the node parents
-		for (int x = 0; x < columns; x++)
-			for (int y = 0; y < rows; y++)
-				nodes[x][y].parent = null;
-		
+		cleanup();
 		PathNode start = nodes[startX][startY];
 		PathNode dest = nodes[destX][destY];
 		
-		open.offer(start);
+		open.add(start);
 		
 		start.g = 0;
 		start.h = heuristic.run(start, dest);
@@ -89,13 +114,12 @@ public class PathFinder
 		while (open.size() > 0)
 		{
 			PathNode currentNode = open.remove();
+			closed.add(currentNode);
 			
 			if (currentNode == dest)
 			{
 				return rebuildPath(currentNode);
 			}
-			
-			closed.add(currentNode);
 			
 			for (PathNode n : getNeighbors(currentNode))
 			{
@@ -149,6 +173,12 @@ public class PathFinder
 		Horizontal
 	}
 
+	/**
+	 * Retraces the path back to the start giving only end points
+	 * nodes in a straight line are ignored
+	 * @param dest the destination node to start at
+	 * @return a list of the nodes returning to the start
+	 */
 	private List<PathNode> rebuildPath(PathNode dest) 
 	{
 		LinkedList<PathNode> path = new LinkedList<PathNode>();

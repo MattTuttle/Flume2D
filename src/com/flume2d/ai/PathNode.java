@@ -16,6 +16,7 @@ public class PathNode implements Comparable<PathNode>
 	{
 		this.x = x;
 		this.y = y;
+		this.parent = null;
 	}
 	
 	public String toString()
