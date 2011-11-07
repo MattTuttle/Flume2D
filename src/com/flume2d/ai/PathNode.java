@@ -1,6 +1,6 @@
 package com.flume2d.ai;
 
-public class PathNode
+public class PathNode implements Comparable<PathNode>
 {
 	public int x;
 	public int y;
@@ -20,7 +20,17 @@ public class PathNode
 	
 	public String toString()
 	{
-		return "(" + x + ", " + y + ")";
+		return "(" + x + ", " + y + ") f:" + f;
+	}
+
+	@Override
+	public int compareTo(PathNode node)
+	{
+		if (f < node.f)
+			return -1;
+		else if (f > node.f)
+			return 1;
+		return 0;
 	}
 	
 }

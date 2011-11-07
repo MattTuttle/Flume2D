@@ -29,8 +29,8 @@ public class PathFinder
 {
 	
 	private PathNode[][] nodes;
-	private LinkedList<PathNode> open;
-	private LinkedList<PathNode> closed;
+	private PriorityQueue<PathNode> open;
+	private PriorityQueue<PathNode> closed;
 	
 	private IWalkable walkable;
 	private IHeuristic heuristic;
@@ -62,8 +62,8 @@ public class PathFinder
 			for (int y = 0; y < rows; y++)
 				nodes[x][y] = new PathNode(x, y);
 		
-		open = new LinkedList<PathNode>();
-		closed = new LinkedList<PathNode>();
+		open = new PriorityQueue<PathNode>();
+		closed = new PriorityQueue<PathNode>();
 	}
 	
 	public List<PathNode> findPath(int startX, int startY, int destX, int destY)
@@ -80,7 +80,7 @@ public class PathFinder
 		PathNode start = nodes[startX][startY];
 		PathNode dest = nodes[destX][destY];
 		
-		open.push(start);
+		open.offer(start);
 		
 		start.g = 0;
 		start.h = heuristic.run(start, dest);
@@ -88,28 +88,14 @@ public class PathFinder
 		
 		while (open.size() > 0)
 		{
-			double f = Double.MAX_VALUE;
-			PathNode currentNode = null;
-			
-			// choose the node with the lesser f cost
-			Iterator<PathNode> it = open.iterator();
-			while (it.hasNext())
-			{
-				PathNode node = it.next();
-				if (node.f < f)
-				{
-					currentNode = node;
-					f = currentNode.f;
-				}
-			}
+			PathNode currentNode = open.remove();
 			
 			if (currentNode == dest)
 			{
 				return rebuildPath(currentNode);
 			}
 			
-			open.remove(currentNode);
-			closed.push(currentNode);
+			closed.offer(currentNode);
 			
 			for (PathNode n : getNeighbors(currentNode))
 			{
@@ -120,11 +106,11 @@ public class PathFinder
 				int g = currentNode.g + n.cost;
 				if (!open.contains(n))
 				{
-					open.push(n);
 					n.parent = currentNode;
 					n.g = g;
 					n.h = heuristic.run(n, dest);
 					n.f = n.g + n.h;
+					open.offer(n);
 				}
 				else if (g < n.g)
 				{
