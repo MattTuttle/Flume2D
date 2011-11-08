@@ -33,8 +33,8 @@ public class Entity implements Disposable
 	{
 		this.x = x;
 		this.y = y;
-		this.graphic = graphic;
-		this.mask = mask;
+		setGraphic(graphic);
+		setMask(mask);
 		this.layer = 0;
 	}
 	
@@ -153,19 +153,22 @@ public class Entity implements Disposable
 	 */
 	public boolean collideAt(int x, int y)
 	{
-		if (mask != null)
-			return mask.collideAt(x, y);
-		return false;
+		if (mask == null)
+			return false;
+		
+		return mask.collideAt(x, y);
 	}
 	
 	public void setMask(Mask mask)
 	{
+		if (mask == null) return;
+		mask.parent = this;
 		this.mask = mask;
-		this.mask.parent = this;
 	}
 	
 	public void setGraphic(Graphic graphic)
 	{
+		if (graphic == null) return;
 		this.graphic = graphic;
 	}
 	

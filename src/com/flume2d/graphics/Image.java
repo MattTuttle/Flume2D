@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 public class Image implements Graphic
 {
 	
-	public float x, y;
+	public float originX, originY;
 	public int frameX, frameY;
 	public int frameWidth, frameHeight;
 	public int imageWidth, imageHeight;
@@ -21,19 +21,22 @@ public class Image implements Graphic
 		// set default frame width to image width
 		frameWidth = imageWidth = image.getWidth();
 		frameHeight = imageHeight = image.getHeight();
-		x = y = frameX = frameY = 0;
+		originX = originY = frameX = frameY = 0;
 		scale = 1;
+	}
+	
+	public void setOrigin(int x, int y)
+	{
+		originX = x;
+		originY = y;
 	}
 
 	@Override
 	public void render(SpriteBatch spriteBatch)
 	{
-		float originX = x - frameWidth / 2;
-		float originY = y - frameHeight / 2;
-		
 		TextureRegion region = new TextureRegion(image, frameX, frameY, frameWidth, frameHeight);
 		region.flip(false, true);
-		spriteBatch.draw(region, originX, originY, frameWidth / 2, frameHeight / 2, frameWidth, frameHeight, scale, scale, angle);
+		spriteBatch.draw(region, 0, 0, originX, originY, frameWidth, frameHeight, scale, scale, angle);
 	}
 	
 	@Override
