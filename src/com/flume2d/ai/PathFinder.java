@@ -190,15 +190,22 @@ public class PathFinder
 		PathNode n = dest;
 		while (n.parent != null)
 		{
-			if (n.y == n.parent.y && dir != Direction.Vertical)
+			if (allowDiagonal)
 			{
 				path.push(n);
-				dir = Direction.Vertical;
 			}
-			if (n.x == n.parent.x && dir != Direction.Horizontal)
+			else
 			{
-				path.push(n);
-				dir = Direction.Horizontal;
+				if (n.y == n.parent.y && dir != Direction.Vertical)
+				{
+					path.push(n);
+					dir = Direction.Vertical;
+				}
+				if (n.x == n.parent.x && dir != Direction.Horizontal)
+				{
+					path.push(n);
+					dir = Direction.Horizontal;
+				}
 			}
 			
 			n = n.parent;
@@ -219,25 +226,30 @@ public class PathFinder
 		PathNode currentNode = null;
 		LinkedList<PathNode> neighbors = new LinkedList<PathNode>();
 		
-		if (x > 0 && walkable.isWalkable(x - 1, y))
+		boolean left = x > 0 && walkable.isWalkable(x - 1, y);
+		boolean right = x < columns - 1 && walkable.isWalkable(x + 1, y);
+		boolean up = y > 0 && walkable.isWalkable(x, y - 1);
+		boolean down = y < rows - 1 && walkable.isWalkable(x, y + 1);
+		
+		if (left)
 		{
 			currentNode = nodes[x - 1][y];
 			currentNode.cost = COST_ORTHOGONAL;
 			neighbors.push(currentNode);
 		}
-		if (x < columns && walkable.isWalkable(x + 1, y))
+		if (right)
 		{
 			currentNode = nodes[x + 1][y];
 			currentNode.cost = COST_ORTHOGONAL;
 			neighbors.push(currentNode);
 		}
-		if (y > 0 && walkable.isWalkable(x, y - 1))
+		if (up)
 		{
 			currentNode = nodes[x][y - 1];
 			currentNode.cost = COST_ORTHOGONAL;
 			neighbors.push(currentNode);
 		}
-		if (y < rows && walkable.isWalkable(x, y + 1))
+		if (down)
 		{
 			currentNode = nodes[x][y + 1];
 			currentNode.cost = COST_ORTHOGONAL;
@@ -245,25 +257,25 @@ public class PathFinder
 		}
 		if (allowDiagonal)
 		{
-			if (x > 0 && y > 0 && walkable.isWalkable(x - 1, y - 1))
+			if (left && up)
 			{
 				currentNode = nodes[x - 1][y - 1];
 				currentNode.cost = COST_DIAGONAL;
 				neighbors.push(currentNode);
 			}
-			if (x > 0 && y < rows && walkable.isWalkable(x - 1, y + 1))
+			if (left && down)
 			{
 				currentNode = nodes[x - 1][y + 1];
 				currentNode.cost = COST_DIAGONAL;
 				neighbors.push(currentNode);
 			}
-			if (x < columns && y < rows && walkable.isWalkable(x + 1, y + 1))
+			if (right && down)
 			{
 				currentNode = nodes[x + 1][y + 1];
 				currentNode.cost = COST_DIAGONAL;
 				neighbors.push(currentNode);
 			}
-			if (x < columns && y > 0 && walkable.isWalkable(x + 1, y - 1))
+			if (right && up)
 			{
 				currentNode = nodes[x + 1][y - 1];
 				currentNode.cost = COST_DIAGONAL;
