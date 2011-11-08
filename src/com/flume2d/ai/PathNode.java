@@ -21,7 +21,7 @@ public class PathNode implements Comparable<PathNode>
 	
 	public String toString()
 	{
-		return "(" + x + ", " + y + ") f:" + f;
+		return "(" + x + ", " + y + ")";
 	}
 
 	@Override

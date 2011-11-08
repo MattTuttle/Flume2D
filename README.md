@@ -20,10 +20,10 @@ Features
 	* Similar to FlashPunk masks
 	* AABB, Circle, Grid and Polygon collision
 * Basic UDP Networking
+* Motion helpers (tweens)
 
 Todo
 ------------------------
-* Tweens, Motion helpers?
 * Particle System
 * Collision Polygon editor
 * Font rendering
