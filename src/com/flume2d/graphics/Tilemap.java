@@ -1,5 +1,6 @@
 package com.flume2d.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -29,8 +30,13 @@ public class Tilemap implements Graphic, Disposable
 		this.margin = margin;
 		
 		tiles = new int[columns][rows];
-		buffer = new FrameBuffer(Pixmap.Format.RGBA4444, pow2(width), pow2(height), false);
 		dirty = false;
+		
+		if (Gdx.graphics.isGL20Available())
+		{
+			// TODO: fix framebuffer logic
+//			frameBuffer = new FrameBuffer(Pixmap.Format.RGBA4444, pow2(width), pow2(height), false);
+		}
 	}
 	
 	private int pow2(int val)
@@ -44,7 +50,7 @@ public class Tilemap implements Graphic, Disposable
 	@Override
 	public void dispose()
 	{
-		buffer.dispose();
+		if (frameBuffer != null) frameBuffer.dispose();
 		tileset.dispose();
 	}
 	
@@ -53,25 +59,26 @@ public class Tilemap implements Graphic, Disposable
 	{
 		if (tileset == null) return;
 		
-		if (dirty)
+		if (Gdx.graphics.isGL20Available() && frameBuffer != null)
 		{
-			drawMap(spriteBatch);
-			dirty = false;
+			if (dirty)
+			{
+				drawToFrameBuffer(spriteBatch);
+				dirty = false;
+			}
+			spriteBatch.draw(frameBuffer.getColorBufferTexture(), 0, 0);
 		}
-		
-		int x = 0, y = 0;
-		spriteBatch.draw(buffer.getColorBufferTexture(), x, y);
+		else
+		{
+			drawBatch(spriteBatch);
+		}
 	}
 	
-	public void drawMap(SpriteBatch spriteBatch)
+	private void drawBatch(SpriteBatch spriteBatch)
 	{
 		int tile, tileX, tileY;
 		TextureRegion region = new TextureRegion(tileset);
 		int tileCols = (tileset.getWidth() - margin * 2) / (tileWidth + spacing);
-		
-		// clear the sprite batch before rendering to a buffer
-		spriteBatch.flush();
-		buffer.begin();
 		
 		for (int tx = 0; tx < columns; tx++)
 		{
@@ -84,22 +91,38 @@ public class Tilemap implements Graphic, Disposable
 				tileY = (int) Math.floor(tile / tileCols);
 				
 				region.setRegion(
-						tileX * tileWidth  + spacing * tileX + margin,
-						tileY * tileHeight + spacing * tileY + margin,
+						(tileX * tileWidth)  + (spacing * tileX) + margin,
+						(tileY * tileHeight) + (spacing * tileY) + margin,
 						tileWidth, tileHeight);
 				region.flip(false, true);
 				spriteBatch.draw(region, tx * tileWidth, ty * tileHeight);
 			}
 		}
+	}
+	
+	private void drawToFrameBuffer(SpriteBatch spriteBatch)
+	{
+		GL20 gl = Gdx.graphics.getGL20();
+		
+		// clear the sprite batch before rendering to a buffer
+		spriteBatch.flush();
+		frameBuffer.begin();
+		gl.glViewport( 0, 0, frameBuffer.getWidth(), frameBuffer.getHeight() );
+		gl.glClear( GL20.GL_COLOR_BUFFER_BIT );
+		
+		drawBatch(spriteBatch);
 		
 		// flush the sprite batch onto the buffer
 		spriteBatch.flush();
-		buffer.end();
+		frameBuffer.end();
+		
+		gl.glViewport( 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() );
+		gl.glClear( GL20.GL_COLOR_BUFFER_BIT );
 	}
 
 	public void setTile(int x, int y, int tile)
 	{
-		if (x >= tiles.length || y >= tiles[0].length) return;
+		if (x >= columns || y >= rows) return;
 		
 		tiles[x][y] = tile;
 		dirty = true;
@@ -107,7 +130,7 @@ public class Tilemap implements Graphic, Disposable
 	
 	public int getTile(int x, int y)
 	{
-		if (x >= tiles.length || y >= tiles[0].length) return -1;
+		if (x >= columns || y >= rows) return -1;
 		
 		return tiles[x][y];
 	}
@@ -130,8 +153,8 @@ public class Tilemap implements Graphic, Disposable
 	@Override public boolean isActive() { return false; }
 	@Override public boolean isVisible() { return true; }
 	
-	private int columns;
-	private int rows;
+	public int columns;
+	public int rows;
 	
 	private int width;
 	private int height;
@@ -143,7 +166,7 @@ public class Tilemap implements Graphic, Disposable
 	
 	private int[][] tiles;
 	private Texture tileset;
-	private FrameBuffer buffer;
+	private FrameBuffer frameBuffer;
 	private boolean dirty;
 
 }
