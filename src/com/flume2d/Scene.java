@@ -46,10 +46,13 @@ public class Scene implements Disposable
 		added.add(e);
 	}
 	
-	public void add(Entity[] e)
+	public void add(List<Entity> list)
 	{
-		for (int i = 0; i < e.length; i++)
-			add(e);
+		Iterator<Entity> it = list.iterator();
+		while (it.hasNext())
+		{
+			add(it.next());
+		}
 	}
 	
 	public void remove(Entity e)
@@ -57,10 +60,13 @@ public class Scene implements Disposable
 		removed.add(e);
 	}
 	
-	public void remove(Entity[] e)
+	public void remove(List<Entity> list)
 	{
-		for (int i = 0; i < e.length; i++)
-			remove(e);
+		Iterator<Entity> it = list.iterator();
+		while (it.hasNext())
+		{
+			remove(it.next());
+		}
 	}
 	
 	public Entity addGraphic(Graphic graphic)
