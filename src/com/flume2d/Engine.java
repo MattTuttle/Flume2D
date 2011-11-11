@@ -26,7 +26,8 @@ public class Engine implements ApplicationListener
 	@Override
 	public void dispose()
 	{
-		scene.dispose();
+		if (scene != null)
+			scene.dispose();
 	}
 
 	@Override
