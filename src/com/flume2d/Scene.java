@@ -247,27 +247,35 @@ public class Scene implements Disposable
 	
 	private void SortTypeList() 
 	{
-		Iterator<String> it = typeList.keySet().iterator();
-		while (it.hasNext())
+		Iterator<Entity> it;
+		Iterator<String> keys;
+		LinkedList<Entity> added = new LinkedList<Entity>();
+		keys = typeList.keySet().iterator();
+		while (keys.hasNext())
 		{
-			String key = it.next();
+			String key = keys.next();
 			LinkedList<Entity> list = typeList.get(key);
-			Iterator<Entity> it2 = list.iterator();
-			while (it2.hasNext())
+			it = list.iterator();
+			while (it.hasNext())
 			{
-				Entity e = it2.next();
+				Entity e = it.next();
 				// check that the entity is in the right type group
 				if (key != e.type)
 				{
-					it2.remove();
-					addType(e);
+					it.remove();
+					added.add(e);
 				}
 			}
 			// remove an empty list
 			if (list.size() == 0)
 			{
-				typeList.remove(key);
+				keys.remove();
 			}
+		}
+		it = added.iterator();
+		while (it.hasNext())
+		{
+			addType(it.next());
 		}
 	}
 	
