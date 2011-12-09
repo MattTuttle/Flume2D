@@ -1,0 +1,32 @@
+<project name="Flume2D" default="dist" basedir=".">
+
+	<target name="-load-properties">
+		<property file="ant.properties"/>
+	</target>
+
+	<target name="-init" depends="-load-properties">
+		<tstamp/>
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="compile" depends="-init">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="gdx.jar"/>
+					<include name="gdx-natives.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile">
+		<mkdir dir="${dist.dir}"/>
+		<jar jarfile="${dist.dir}/Flume2D-${DSTAMP}.jar" basedir="${build.dir}"/>
+	</target>
+
+	<target name="clean" depends="-load-properties">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+</project>
