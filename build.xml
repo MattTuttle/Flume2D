@@ -1,7 +1,25 @@
 <project name="Flume2D" default="dist" basedir=".">
 
+	<property name="dist.dir" location="dist" />
+	<property name="src.dir" location="src" />
+	<property name="lib.dir" location="lib" />
+	<property name="build.dir" location="build" />
+
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<echo message="git @{command}" />
+			<exec executable="git" dir="@{dir}">
+				<arg value="@{command}" />
+				<args/>
+			</exec>
+		</sequential>
+	</macrodef>
+
 	<target name="-load-properties">
-		<property file="ant.properties"/>
+		<property file="ant.properties" />
 	</target>
 
 	<target name="-init" depends="-load-properties">
@@ -29,4 +47,10 @@
 		<delete dir="${build.dir}"/>
 		<delete dir="${dist.dir}"/>
 	</target>
+
+	<target name="git">
+		<git command="pull" dir="." />
+	</target>
+
+	<target name="all" depends="git, clean, dist" />
 </project>
