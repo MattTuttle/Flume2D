@@ -37,6 +37,11 @@ public class Spritemap extends Image
 		a.name = name;
 		animations.put(name, a);
 	}
+
+	public void add(Animation anim)
+	{
+		animations.put(anim.name, anim);
+	}
 	
 	public void play(String name)
 	{
