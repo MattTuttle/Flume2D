@@ -50,7 +50,7 @@ public class Spritemap extends Image
 	
 	public void play(String name, boolean reset)
 	{
-		if (reset || (currentAnim != null && currentAnim.name != name))
+		if (reset || (currentAnim != null && name.equals(currentAnim.name) == false))
 		{
 			if (currentAnim != null) currentAnim.frame = 0;
 			frameTime = 0;
